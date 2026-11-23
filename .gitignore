@@ -1,0 +1,7 @@
+.build/
+*.app/
+Veypane.zip
+Sidelark.zip
+SlideCraft.zip
+.DS_Store
+build-logs/

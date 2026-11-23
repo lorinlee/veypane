@@ -1,0 +1,307 @@
+/* App & Common */
+"app.name" = "Veypane";
+"common.cancel" = "Cancel";
+"common.save" = "Save";
+"common.apply" = "Apply";
+"common.add" = "Add";
+"common.remove" = "Remove";
+"common.reset" = "Reset";
+"common.close" = "Close";
+"common.done" = "Done";
+"common.default" = "Default";
+"common.enabled" = "Enabled";
+"common.disabled" = "Disabled";
+
+/* Anchors */
+"anchor.left" = "Left Edge";
+"anchor.right" = "Right Edge";
+"anchor.topLeft" = "Top-Left Corner";
+"anchor.topRight" = "Top-Right Corner";
+"anchor.bottomLeft" = "Bottom-Left Corner";
+"anchor.bottomRight" = "Bottom-Right Corner";
+
+/* Status Item Menu */
+"menu.show_panel" = "Show Panel";
+"menu.hide_panel" = "Hide Panel";
+"menu.new_pad" = "New Pad…";
+"menu.extensions" = "Extensions…";
+"menu.settings" = "Settings…";
+"menu.welcome_guide" = "Show Welcome Guide";
+"menu.quit" = "Quit Veypane";
+
+/* Pad Strip & Context Menu */
+"strip.add_pad_tooltip" = "New Pad";
+"strip.profiles_tooltip" = "Switch Profile";
+"strip.settings_tooltip" = "Settings";
+"strip.manage_profiles" = "Manage Profiles…";
+"strip.profiles_title" = "Profiles";
+"pad.menu.reload" = "Reload";
+"pad.menu.copy_url" = "Copy URL";
+"pad.menu.open_browser" = "Open in Browser";
+"pad.menu.rename" = "Rename…";
+"pad.menu.use_page_title" = "Use Automatic Page Title";
+"pad.menu.hibernate" = "Hibernate";
+"pad.menu.wake" = "Wake";
+"pad.menu.pip" = "Picture in Picture";
+"pad.menu.exit_pip" = "Exit Picture in Picture";
+"pad.menu.remove" = "Remove";
+"pad.rename_title" = "Rename Pad";
+"pad.rename_placeholder" = "Pad title";
+
+/* Add-Pad Popover */
+"add_pad.placeholder" = "Search or enter website";
+"add_pad.open_direct" = "Open %@";
+"add_pad.search_web" = "Search for \"%@\"";
+"add_pad.source.favorite" = "Favorite";
+"add_pad.source.history" = "Recent";
+"add_pad.source.open_pad" = "Open Pad";
+"add_pad.hint" = "↑↓ to choose · Enter to open · Esc to close";
+
+/* Compact Toolbar */
+"toolbar.back" = "Back";
+"toolbar.forward" = "Forward";
+"toolbar.reload" = "Reload";
+"toolbar.stop" = "Stop";
+"toolbar.edit_address" = "Open Location…";
+"toolbar.address_placeholder" = "Search or enter website";
+"toolbar.pin" = "Keep Panel Open";
+"toolbar.unpin" = "Allow Auto-Hide";
+"toolbar.extensions" = "Extensions";
+"toolbar.manage_extensions" = "Manage Extensions…";
+"toolbar.no_extensions" = "No Enabled Extensions";
+"toolbar.open_browser" = "Open in Default Browser";
+"toolbar.more" = "More Actions";
+"toolbar.zoom_in" = "Zoom In";
+"toolbar.zoom_out" = "Zoom Out";
+"toolbar.zoom_reset" = "Actual Size";
+"toolbar.find" = "Find in Page…";
+"toolbar.user_agent" = "User Agent";
+"toolbar.per_site_size" = "Panel Size for This Site…";
+"toolbar.mute" = "Mute Audio";
+"toolbar.unmute" = "Unmute Audio";
+"toolbar.inspector_enable" = "Enable Web Inspector";
+"toolbar.inspector_disable" = "Disable Web Inspector";
+"toolbar.pause_modifications" = "Pause Custom Rules & Shims (Keeps Extensions)";
+"toolbar.resume_modifications" = "Resume Custom Rules & Shims";
+"toolbar.site_diagnostics" = "Site Compatibility & Diagnostics…";
+"toolbar.copy_url" = "Copy URL";
+"toolbar.custom_ua_option" = "Custom…";
+"toolbar.custom_ua_title" = "Custom User Agent";
+
+/* Find Bar & Placeholders */
+"find.placeholder" = "Find in page…";
+"find.not_found" = "No match";
+"panel.hibernated_title" = "%@ is sleeping";
+"panel.wake_button" = "Wake Pad";
+"panel.pip_title" = "%@ is in Picture in Picture";
+"panel.pip_return" = "Return to Panel";
+"panel.empty_title" = "No Pads Yet";
+"panel.empty_button" = "Add Your First Pad";
+"panel.size_sheet_title" = "Panel Size — %@";
+"panel.size_width_pct" = "Width % (18–95, blank for default)";
+"panel.size_height_pct" = "Height % (25–96, blank for default)";
+"panel.copied_url" = "Copied URL";
+
+/* User Agent & Theme Names */
+"ua.desktopSafari" = "Desktop Safari";
+"ua.iPhoneSafari" = "iPhone Safari";
+"ua.iPadSafari" = "iPad Safari";
+"ua.defaultWebKit" = "System Default";
+"ua.custom" = "Custom";
+"theme.system" = "Follow System";
+"theme.light" = "Light";
+"theme.dark" = "Dark";
+"newwin.openInNewPad" = "Open in New Pad";
+"newwin.openInCurrentPad" = "Open in Current Pad";
+"newwin.openInDefaultBrowser" = "Open in Default Browser";
+
+/* Settings Window & Panes */
+"settings.window_title" = "Veypane Settings";
+"settings.pane.general" = "General";
+"settings.pane.trigger" = "Trigger";
+"settings.pane.appearance" = "Appearance";
+"settings.pane.pads_profiles" = "Pads & Profiles";
+"settings.pane.extensions" = "Extensions";
+"settings.pane.privacy" = "Privacy & Blocking";
+"settings.pane.automation" = "Automation";
+"settings.pane.about" = "About";
+
+/* Settings: General */
+"settings.general.startup" = "Startup & Menu Bar";
+"settings.general.launch_at_login" = "Launch Veypane at login";
+"settings.general.show_menu_icon" = "Show icon in menu bar";
+"settings.general.browsing" = "Browsing";
+"settings.general.search_engine" = "Search engine";
+"settings.general.custom_search" = "Search URL (%s for query)";
+"settings.general.new_links" = "Links that open new windows";
+"settings.general.cmd_w_hides" = "⌘W hides panel instead of closing pad";
+"settings.general.language" = "Language";
+"settings.general.language_caption" = "Veypane automatically follows your macOS system language (English and Simplified Chinese).";
+
+/* Settings: Trigger */
+"settings.trigger.position" = "Screen Edge or Corner";
+"settings.trigger.diagram_caption" = "Click an edge or corner on the screen diagram to choose where the panel slides in.";
+"settings.trigger.enable_hot_edge" = "Open when pointer touches screen edge";
+"settings.trigger.dwell_delay" = "Hover delay";
+"settings.trigger.hide_delay" = "Auto-hide delay after pointer leaves";
+"settings.trigger.hotkey" = "Keyboard Shortcut";
+"settings.trigger.hotkey_caption" = "Show or hide the panel from anywhere.";
+"settings.trigger.record_hotkey" = "Record Shortcut";
+"settings.trigger.press_keys" = "Press shortcut…";
+"settings.trigger.reset_hotkey" = "Reset to ⌃`";
+"settings.trigger.advanced" = "Advanced Trigger Options";
+"settings.trigger.require_modifier" = "Require modifier key at edge:";
+"settings.trigger.ignore_fullscreen" = "Pause edge trigger in full-screen apps";
+"settings.trigger.ignore_drag" = "Ignore while dragging files or text";
+"settings.trigger.gestures" = "Swipe toolbar to switch pads & swipe toward edge to hide";
+
+/* Settings: Appearance */
+"settings.appearance.layout" = "Size & Position";
+"settings.appearance.side" = "Panel side";
+"settings.appearance.side_left" = "Left";
+"settings.appearance.side_right" = "Right";
+"settings.appearance.width" = "Panel width";
+"settings.appearance.height" = "Panel height";
+"settings.appearance.preview_caption" = "Live preview relative to your display.";
+"settings.appearance.style" = "Card Style";
+"settings.appearance.theme" = "Appearance";
+"settings.appearance.corners" = "Corner radius";
+"settings.appearance.shadow" = "Soft drop shadow";
+"settings.appearance.compact_strip" = "Compact pad strip";
+"settings.appearance.sidebar_width" = "Sidebar width";
+"settings.appearance.sidebar_icon_size" = "Sidebar icon size";
+"settings.appearance.sidebar_reset_default" = "Restore Default (%d pt / %d pt)";
+"settings.appearance.sidebar_mode_caption" = "Default and Compact modes save their own sidebar width and icon size independently.";
+"settings.appearance.sidebar_preview_label" = "Sidebar live preview";
+"settings.appearance.disable_animations" = "Disable slide & fade animations";
+"settings.appearance.pin_open" = "Keep panel pinned open (prevent auto-hide)";
+"settings.appearance.advanced" = "Multi-Display & Motion";
+"settings.appearance.display" = "Show panel on";
+"settings.appearance.follow_mouse" = "Display with pointer";
+"settings.appearance.always_on_top" = "Keep floating above status windows";
+"toolbar.always_on_top" = "Always on Top";
+
+/* Settings: Pads & Profiles */
+"settings.profiles.section" = "Profiles";
+"settings.profiles.caption" = "Each profile keeps separate logins, cookies, and site storage.";
+"settings.profiles.new_placeholder" = "New profile name (e.g. Client)";
+"settings.profiles.add_button" = "Add Profile";
+"settings.profiles.memory" = "Memory & Page Retention";
+"settings.profiles.hibernate_off" = "Always Keep (Never Auto-Sleep)";
+"settings.profiles.hibernate_minutes" = "Auto-sleep inactive pads after %d min";
+"settings.profiles.retention_label" = "Keep background pages";
+"settings.profiles.retention_30m" = "30 minutes";
+"settings.profiles.retention_1h" = "1 hour";
+"settings.profiles.retention_2h" = "2 hours (Default)";
+"settings.profiles.retention_4h" = "4 hours";
+"settings.profiles.retention_12h" = "12 hours";
+"settings.profiles.retention_24h" = "24 hours";
+"settings.profiles.retention_always" = "Always Keep (Never Auto-Sleep)";
+"settings.profiles.retention_custom_min" = "Custom (%d min)";
+"settings.profiles.max_live_label" = "Max active live pages";
+"settings.profiles.max_live_unlimited" = "Unlimited (Default)";
+"settings.profiles.max_live_count" = "%d pages";
+"settings.profiles.retention_caption" = "Always Keep prevents Veypane from auto-sleeping tabs on a timer. Under critical macOS memory pressure, WebKit process termination, or site-initiated refreshes, pages may still reload.";
+"panel.status.memory_pressure_evicted" = "Slept %d background pad(s) due to macOS memory pressure";
+"panel.status.web_process_reloading" = "Web process restarted — reloading page";
+"panel.status.web_process_manual_reload" = "Web process stopped repeatedly — click Reload to retry";
+"settings.profiles.site_rules" = "Per-Site Size Rules";
+"settings.profiles.host_placeholder" = "Domain (e.g. *.slack.com)";
+"settings.profiles.backup_sync" = "Backup & Folder Sync";
+"settings.profiles.export" = "Export Settings…";
+"settings.profiles.import" = "Import Settings…";
+"settings.profiles.merge" = "Merge JSON…";
+"settings.profiles.sync_folder" = "Sync folder (optional, no cookies)";
+"settings.profiles.use_icloud" = "Use iCloud Drive Folder";
+
+/* Settings: Privacy & Blocking */
+"settings.privacy.blocker" = "Content Blocker";
+"settings.privacy.enable_blocker" = "Block common ads and third-party trackers";
+"settings.privacy.builtin_rules" = "Use built-in tracker filter list";
+"settings.privacy.block_domain_placeholder" = "Add domain to block (e.g. ads.example.com)";
+"settings.privacy.block_button" = "Block";
+"settings.privacy.scripts" = "Custom CSS & JavaScript";
+"settings.privacy.scripts_caption" = "Inject custom styles or scripts on matching websites.";
+"settings.privacy.rule_name" = "Rule name";
+"settings.privacy.rule_pattern" = "URL pattern (e.g. *://*.example.com/*)";
+"settings.privacy.inject_start" = "At Document Start";
+"settings.privacy.inject_end" = "At Document End";
+"settings.privacy.custom_css" = "Custom CSS";
+"settings.privacy.custom_js" = "Custom JavaScript";
+"settings.privacy.add_rule" = "Add Rule";
+"settings.privacy.advanced_json" = "Advanced WebKit Rule JSON";
+
+/* Settings: Automation */
+"settings.automation.server" = "Local Automation & MCP Server";
+"settings.automation.caption" = "Opt-in loopback server (127.0.0.1 only) for local scripts and AI tools.";
+"settings.automation.enable" = "Enable local server";
+"settings.automation.address" = "Endpoint";
+"settings.automation.port" = "Port";
+"settings.automation.token" = "Access token";
+"settings.automation.copy_token" = "Copy";
+"settings.automation.regenerate_token" = "Regenerate";
+"settings.automation.allow_js" = "Allow JavaScript evaluation endpoint";
+"settings.automation.cli_reference" = "CLI & URL Scheme Reference";
+
+/* Settings: Extensions */
+"settings.extensions.section" = "Installed Extensions";
+"settings.extensions.add_safari_app" = "Add from Safari App…";
+"settings.extensions.add_folder" = "Add from Folder…";
+"settings.extensions.add_file" = "Add from File (.zip/.crx)…";
+"settings.extensions.check_safari_updates" = "Check Safari App Updates";
+"settings.extensions.reload_safari" = "Reload";
+"settings.extensions.safari_source_badge" = "Safari App: %@";
+"settings.extensions.remove_confirm_safari_message" = "This unlinks the Safari extension from Veypane and clears Veypane's own extension storage. The installed app in Applications is not modified.";
+"settings.extensions.empty" = "No extensions installed yet.";
+"settings.extensions.caption" = "Load Safari Web Extension apps (.app/.appex) directly in place via WebKit (without importing Safari state) or unpacked/zip/crx packages. Veypane maintains its own permissions and storage; third-party native app messaging bridges, sidePanel, and offscreen documents may be unavailable.";
+"settings.extensions.requires_macos" = "Requires macOS 15.4 or later";
+"settings.extensions.enabled" = "Enabled";
+"settings.extensions.pin_toolbar" = "Pin to toolbar";
+"settings.extensions.options" = "Options…";
+"settings.extensions.website_access" = "Website access";
+"settings.extensions.access.all" = "All websites";
+"settings.extensions.access.ask" = "Ask";
+"settings.extensions.access.specific" = "Specific sites";
+"settings.extensions.site_placeholder" = "Pattern (e.g. *://*.wikipedia.org/*)";
+"settings.extensions.permissions" = "Permissions…";
+"settings.extensions.no_permissions" = "No additional API permissions requested.";
+"settings.extensions.remove_confirm_title" = "Remove \"%@\"?";
+"settings.extensions.remove_confirm_message" = "This deletes the unpacked extension copy and clears its extension storage in Veypane.";
+"settings.extensions.errors_label" = "Manifest & runtime notices";
+"extension.prompt.allow" = "Allow";
+"extension.prompt.deny" = "Deny";
+"extension.prompt.permissions_title" = "\"%@\" requests permissions";
+"extension.prompt.sites_title" = "\"%@\" requests website access";
+
+/* Site Compatibility & Diagnostics */
+"compat.banner.title" = "Verification route observed; trigger cause is not yet determined";
+"compat.banner.subtitle" = "Page or frame load issue observed — open Diagnostics for details";
+"compat.action.open_browser" = "Open in Default Browser";
+"compat.action.retry" = "Reload Page";
+"compat.action.copy_link" = "Copy Page Link";
+"compat.action.pause_mods" = "Pause Custom Rules & Shims (Keeps Extensions)";
+"compat.action.mods_paused" = "Resume Custom Rules & Shims";
+"compat.action.diagnostics" = "Diagnostics…";
+"compat.diag.window_title" = "Site Compatibility Diagnostics";
+"compat.diag.refresh" = "Refresh Sample";
+"compat.diag.copy_report" = "Copy Report";
+"compat.diag.privacy_note" = "Strictly origin-only metadata. Page text, cookies, tokens, query strings, paths, IP literals, and cross-origin frame contents are never logged.";
+
+/* Settings: About */
+"settings.about.subtitle" = "Fast slide-over web spaces for macOS";
+"settings.about.version" = "Version 1.2.10";
+"settings.about.cleanroom" = "Built natively with AppKit, SwiftUI, and WebKit. Zero telemetry.";
+"settings.about.extensions_note" = "Browser extensions (Manifest V2 & V3) run natively via WebKit on macOS 15.4 or later.";
+
+/* Welcome / Onboarding Window */
+"welcome.window_title" = "Welcome to Veypane";
+"welcome.heading" = "Your web spaces, one slide away";
+"welcome.subheading" = "Set up how you summon Veypane in two quick steps.";
+"welcome.step1.title" = "1. Choose how to open the panel";
+"welcome.step1.caption" = "Pick a screen edge or corner, or press %@ anytime.";
+"welcome.step2.title" = "2. Accessibility permission";
+"welcome.step2.caption" = "Recommended for smooth global shortcuts and screen-edge gestures.";
+"welcome.ax.granted" = "Accessibility Granted";
+"welcome.ax.not_granted" = "Permission Not Granted Yet";
+"welcome.ax.grant_button" = "Grant Accessibility…";
+"welcome.try_now" = "Try It Now";

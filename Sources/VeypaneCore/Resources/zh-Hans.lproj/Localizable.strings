@@ -1,0 +1,307 @@
+/* App & Common */
+"app.name" = "Veypane";
+"common.cancel" = "取消";
+"common.save" = "保存";
+"common.apply" = "应用";
+"common.add" = "添加";
+"common.remove" = "移除";
+"common.reset" = "重置";
+"common.close" = "关闭";
+"common.done" = "完成";
+"common.default" = "默认";
+"common.enabled" = "已启用";
+"common.disabled" = "已停用";
+
+/* Anchors */
+"anchor.left" = "屏幕左侧";
+"anchor.right" = "屏幕右侧";
+"anchor.topLeft" = "左上角";
+"anchor.topRight" = "右上角";
+"anchor.bottomLeft" = "左下角";
+"anchor.bottomRight" = "右下角";
+
+/* Status Item Menu */
+"menu.show_panel" = "显示面板";
+"menu.hide_panel" = "隐藏面板";
+"menu.new_pad" = "新建网页栏…";
+"menu.extensions" = "扩展…";
+"menu.settings" = "设置…";
+"menu.welcome_guide" = "显示欢迎指南";
+"menu.quit" = "退出 Veypane";
+
+/* Pad Strip & Context Menu */
+"strip.add_pad_tooltip" = "新建网页栏";
+"strip.profiles_tooltip" = "切换身份空间";
+"strip.settings_tooltip" = "设置";
+"strip.manage_profiles" = "管理身份空间…";
+"strip.profiles_title" = "身份空间";
+"pad.menu.reload" = "重新加载";
+"pad.menu.copy_url" = "复制链接";
+"pad.menu.open_browser" = "在默认浏览器中打开";
+"pad.menu.rename" = "重命名…";
+"pad.menu.use_page_title" = "恢复网页自动标题";
+"pad.menu.hibernate" = "休眠省电";
+"pad.menu.wake" = "唤醒页面";
+"pad.menu.pip" = "画中画";
+"pad.menu.exit_pip" = "退出画中画";
+"pad.menu.remove" = "移除";
+"pad.rename_title" = "重命名网页栏";
+"pad.rename_placeholder" = "输入名称";
+
+/* Add-Pad Popover */
+"add_pad.placeholder" = "搜索或输入网址";
+"add_pad.open_direct" = "打开 %@";
+"add_pad.search_web" = "搜索“%@”";
+"add_pad.source.favorite" = "常用推荐";
+"add_pad.source.history" = "最近访问";
+"add_pad.source.open_pad" = "已打开";
+"add_pad.hint" = "↑↓ 选择 · 回车打开 · Esc 关闭";
+
+/* Compact Toolbar */
+"toolbar.back" = "后退";
+"toolbar.forward" = "前进";
+"toolbar.reload" = "刷新";
+"toolbar.stop" = "停止";
+"toolbar.edit_address" = "输入网址或搜索…";
+"toolbar.address_placeholder" = "搜索或输入网址";
+"toolbar.pin" = "固定面板（不自动收起）";
+"toolbar.unpin" = "取消固定";
+"toolbar.extensions" = "扩展";
+"toolbar.manage_extensions" = "管理扩展…";
+"toolbar.no_extensions" = "暂无已启用的扩展";
+"toolbar.open_browser" = "在默认浏览器中打开";
+"toolbar.more" = "更多操作";
+"toolbar.zoom_in" = "放大页面";
+"toolbar.zoom_out" = "缩小页面";
+"toolbar.zoom_reset" = "实际大小";
+"toolbar.find" = "在页面中查找…";
+"toolbar.user_agent" = "浏览器标识 (UA)";
+"toolbar.per_site_size" = "此网站专属尺寸…";
+"toolbar.mute" = "静音此页";
+"toolbar.unmute" = "取消静音";
+"toolbar.inspector_enable" = "启用网页检查器";
+"toolbar.inspector_disable" = "关闭网页检查器";
+"toolbar.pause_modifications" = "暂停此页自定义修改（不影响扩展）";
+"toolbar.resume_modifications" = "恢复此页自定义修改";
+"toolbar.site_diagnostics" = "网站兼容性与诊断…";
+"toolbar.copy_url" = "复制链接";
+"toolbar.custom_ua_option" = "自定义…";
+"toolbar.custom_ua_title" = "自定义 User-Agent";
+
+/* Find Bar & Placeholders */
+"find.placeholder" = "在页面中查找…";
+"find.not_found" = "无匹配结果";
+"panel.hibernated_title" = "%@ 已休眠";
+"panel.wake_button" = "唤醒页面";
+"panel.pip_title" = "%@ 正在画中画中播放";
+"panel.pip_return" = "放回面板";
+"panel.empty_title" = "暂无网页栏";
+"panel.empty_button" = "添加第一个网页";
+"panel.size_sheet_title" = "专属尺寸 — %@";
+"panel.size_width_pct" = "宽度百分比（18–95，留空使用默认）";
+"panel.size_height_pct" = "高度百分比（25–96，留空使用默认）";
+"panel.copied_url" = "已复制链接";
+
+/* User Agent & Theme Names */
+"ua.desktopSafari" = "桌面版 Safari";
+"ua.iPhoneSafari" = "iPhone Safari";
+"ua.iPadSafari" = "iPad Safari";
+"ua.defaultWebKit" = "系统默认";
+"ua.custom" = "自定义";
+"theme.system" = "跟随系统";
+"theme.light" = "浅色";
+"theme.dark" = "深色";
+"newwin.openInNewPad" = "在新建网页栏中打开";
+"newwin.openInCurrentPad" = "在当前网页栏中打开";
+"newwin.openInDefaultBrowser" = "在默认浏览器中打开";
+
+/* Settings Window & Panes */
+"settings.window_title" = "Veypane 设置";
+"settings.pane.general" = "通用";
+"settings.pane.trigger" = "触发方式";
+"settings.pane.appearance" = "外观与尺寸";
+"settings.pane.pads_profiles" = "网页栏与空间";
+"settings.pane.extensions" = "扩展";
+"settings.pane.privacy" = "隐私与拦截";
+"settings.pane.automation" = "自动化接口";
+"settings.pane.about" = "关于";
+
+/* Settings: General */
+"settings.general.startup" = "启动与菜单栏";
+"settings.general.launch_at_login" = "登录时自动启动 Veypane";
+"settings.general.show_menu_icon" = "在菜单栏显示图标";
+"settings.general.browsing" = "浏览行为";
+"settings.general.search_engine" = "默认搜索引擎";
+"settings.general.custom_search" = "自定义搜索地址（%s 代表关键词）";
+"settings.general.new_links" = "打开新窗口链接时";
+"settings.general.cmd_w_hides" = "按 ⌘W 收起面板而非关闭网页栏";
+"settings.general.language" = "界面语言";
+"settings.general.language_caption" = "Veypane 会自动跟随 macOS 系统语言（支持英文与简体中文）。";
+
+/* Settings: Trigger */
+"settings.trigger.position" = "屏幕边缘与热角";
+"settings.trigger.diagram_caption" = "点击下方屏幕示意图中的边缘或角落，选择面板滑出的位置。";
+"settings.trigger.enable_hot_edge" = "鼠标移至屏幕边缘时自动唤出";
+"settings.trigger.dwell_delay" = "边缘停留延迟";
+"settings.trigger.hide_delay" = "鼠标移出后自动收起延迟";
+"settings.trigger.hotkey" = "全局快捷键";
+"settings.trigger.hotkey_caption" = "随时随地显示或收起面板。";
+"settings.trigger.record_hotkey" = "录制快捷键";
+"settings.trigger.press_keys" = "请按下组合键…";
+"settings.trigger.reset_hotkey" = "恢复默认 ⌃`";
+"settings.trigger.advanced" = "高级触发选项";
+"settings.trigger.require_modifier" = "边缘唤出需按住修饰键：";
+"settings.trigger.ignore_fullscreen" = "全屏应用或游戏中暂停边缘触发";
+"settings.trigger.ignore_drag" = "拖拽文件或文本时不触发";
+"settings.trigger.gestures" = "双指滑动工具栏切换网页栏，向屏幕边缘滑动收起";
+
+/* Settings: Appearance */
+"settings.appearance.layout" = "尺寸与位置";
+"settings.appearance.side" = "停靠方向";
+"settings.appearance.side_left" = "左侧";
+"settings.appearance.side_right" = "右侧";
+"settings.appearance.width" = "面板宽度";
+"settings.appearance.height" = "面板高度";
+"settings.appearance.preview_caption" = "实时预览面板在当前显示器上的比例。";
+"settings.appearance.style" = "卡片外观";
+"settings.appearance.theme" = "主题模式";
+"settings.appearance.corners" = "圆角大小";
+"settings.appearance.shadow" = "柔和投影";
+"settings.appearance.compact_strip" = "紧凑型左侧图标栏";
+"settings.appearance.sidebar_width" = "侧栏宽度";
+"settings.appearance.sidebar_icon_size" = "侧栏图标大小";
+"settings.appearance.sidebar_reset_default" = "恢复默认（%d pt / %d pt）";
+"settings.appearance.sidebar_mode_caption" = "默认模式与紧凑模式各自独立保存侧栏宽度和图标大小，互不覆盖。";
+"settings.appearance.sidebar_preview_label" = "侧栏实时预览";
+"settings.appearance.disable_animations" = "取消滑入滑出动画";
+"settings.appearance.pin_open" = "固定窗口（不因移出或点击外部自动收起）";
+"settings.appearance.advanced" = "多显示器与窗口层级";
+"settings.appearance.display" = "显示在";
+"settings.appearance.follow_mouse" = "鼠标所在显示器";
+"settings.appearance.always_on_top" = "始终置顶于普通悬浮窗之上";
+"toolbar.always_on_top" = "始终置顶";
+
+/* Settings: Pads & Profiles */
+"settings.profiles.section" = "身份空间";
+"settings.profiles.caption" = "不同身份空间拥有完全独立的登录状态、Cookie 与网站数据。";
+"settings.profiles.new_placeholder" = "新空间名称（如：客户、研发）";
+"settings.profiles.add_button" = "添加空间";
+"settings.profiles.memory" = "内存与后台页面保留";
+"settings.profiles.hibernate_off" = "始终保留（不主动休眠）";
+"settings.profiles.hibernate_minutes" = "后台闲置 %d 分钟后自动休眠";
+"settings.profiles.retention_label" = "后台页面保留时长";
+"settings.profiles.retention_30m" = "30 分钟";
+"settings.profiles.retention_1h" = "1 小时";
+"settings.profiles.retention_2h" = "2 小时（默认）";
+"settings.profiles.retention_4h" = "4 小时";
+"settings.profiles.retention_12h" = "12 小时";
+"settings.profiles.retention_24h" = "24 小时";
+"settings.profiles.retention_always" = "始终保留（不主动休眠）";
+"settings.profiles.retention_custom_min" = "自定义（%d 分钟）";
+"settings.profiles.max_live_label" = "最多同时保持活跃页面";
+"settings.profiles.max_live_unlimited" = "不限制（默认）";
+"settings.profiles.max_live_count" = "%d 个页面";
+"settings.profiles.retention_caption" = "“始终保留”仅表示 Veypane 不会按闲置时长主动休眠页面；系统内存紧张、WebKit 进程回收或网站自身策略仍可能导致页面刷新。";
+"panel.status.memory_pressure_evicted" = "因系统内存紧张，已休眠 %d 个后台页面";
+"panel.status.web_process_reloading" = "网页渲染进程已重启，正在恢复页面";
+"panel.status.web_process_manual_reload" = "网页进程连续异常，请点击刷新手动重试";
+"settings.profiles.site_rules" = "按网站自动调整尺寸";
+"settings.profiles.host_placeholder" = "域名规则（如 *.slack.com）";
+"settings.profiles.backup_sync" = "备份与文件夹同步";
+"settings.profiles.export" = "导出配置…";
+"settings.profiles.import" = "导入配置…";
+"settings.profiles.merge" = "合并配置…";
+"settings.profiles.sync_folder" = "同步目录（可选，不同步 Cookie）";
+"settings.profiles.use_icloud" = "使用 iCloud 云盘目录";
+
+/* Settings: Privacy & Blocking */
+"settings.privacy.blocker" = "内容与追踪器拦截";
+"settings.privacy.enable_blocker" = "拦截常见广告与第三方追踪脚本";
+"settings.privacy.builtin_rules" = "启用内置轻量过滤规则";
+"settings.privacy.block_domain_placeholder" = "输入要屏蔽的域名（如 ads.example.com）";
+"settings.privacy.block_button" = "屏蔽";
+"settings.privacy.scripts" = "自定义 CSS 与 JavaScript";
+"settings.privacy.scripts_caption" = "为匹配的网站自动注入自定义样式或脚本。";
+"settings.privacy.rule_name" = "规则名称";
+"settings.privacy.rule_pattern" = "网址匹配（如 *://*.example.com/*）";
+"settings.privacy.inject_start" = "文档加载开始时";
+"settings.privacy.inject_end" = "文档加载完成后";
+"settings.privacy.custom_css" = "自定义 CSS";
+"settings.privacy.custom_js" = "自定义 JavaScript";
+"settings.privacy.add_rule" = "添加规则";
+"settings.privacy.advanced_json" = "高级 WebKit 拦截规则 JSON";
+
+/* Settings: Automation */
+"settings.automation.server" = "本地自动化与 MCP 服务";
+"settings.automation.caption" = "默认关闭；开启后仅监听本机 127.0.0.1 并要求令牌验证。";
+"settings.automation.enable" = "启用本地服务";
+"settings.automation.address" = "监听地址";
+"settings.automation.port" = "端口";
+"settings.automation.token" = "访问令牌";
+"settings.automation.copy_token" = "复制";
+"settings.automation.regenerate_token" = "重新生成";
+"settings.automation.allow_js" = "允许通过接口执行受限 JavaScript";
+"settings.automation.cli_reference" = "命令行与 URL Scheme 说明";
+
+/* Settings: Extensions */
+"settings.extensions.section" = "已安装的扩展";
+"settings.extensions.add_safari_app" = "从 Safari 扩展应用添加…";
+"settings.extensions.add_folder" = "从文件夹添加…";
+"settings.extensions.add_file" = "从文件添加 (.zip/.crx)…";
+"settings.extensions.check_safari_updates" = "检查 Safari 应用更新";
+"settings.extensions.reload_safari" = "重载";
+"settings.extensions.safari_source_badge" = "Safari 应用：%@";
+"settings.extensions.remove_confirm_safari_message" = "这将仅从 Veypane 中取消关联该 Safari 扩展并清除 Veypane 内的扩展数据，不会修改或删除已安装的应用程序。";
+"settings.extensions.empty" = "尚未安装任何扩展。";
+"settings.extensions.caption" = "支持直接关联已安装的 Safari 扩展应用（.app / .appex，不导入 Safari 权限/登录态，应用更新后可自动检测重载），或导入文件夹/.zip/.crx 扩展包；第三方原生消息桥接（nativeMessaging）、sidePanel 与 offscreen 文档可能不可用。";
+"settings.extensions.requires_macos" = "需要 macOS 15.4 或更高版本";
+"settings.extensions.enabled" = "启用";
+"settings.extensions.pin_toolbar" = "固定到工具栏";
+"settings.extensions.options" = "选项…";
+"settings.extensions.website_access" = "网站访问权限";
+"settings.extensions.access.all" = "所有网站";
+"settings.extensions.access.ask" = "每次询问";
+"settings.extensions.access.specific" = "指定网站";
+"settings.extensions.site_placeholder" = "网址匹配规则（如 *://*.wikipedia.org/*）";
+"settings.extensions.permissions" = "权限…";
+"settings.extensions.no_permissions" = "未请求额外接口权限。";
+"settings.extensions.remove_confirm_title" = "要移除“%@”吗？";
+"settings.extensions.remove_confirm_message" = "这将删除 Veypane 中的扩展副本并清除其本地存储数据。";
+"settings.extensions.errors_label" = "清单与运行提示";
+"extension.prompt.allow" = "允许";
+"extension.prompt.deny" = "拒绝";
+"extension.prompt.permissions_title" = "“%@”请求权限";
+"extension.prompt.sites_title" = "“%@”请求网站访问权限";
+
+/* Site Compatibility & Diagnostics */
+"compat.banner.title" = "当前为验证页面，原因尚未确认";
+"compat.banner.subtitle" = "检测到网页加载异常，原因请查看诊断";
+"compat.action.open_browser" = "在默认浏览器中打开";
+"compat.action.retry" = "重新加载网页";
+"compat.action.copy_link" = "复制页面链接";
+"compat.action.pause_mods" = "暂停自定义页面修改（不影响扩展）";
+"compat.action.mods_paused" = "恢复自定义页面修改";
+"compat.action.diagnostics" = "诊断详情…";
+"compat.diag.window_title" = "网站兼容性诊断";
+"compat.diag.refresh" = "重新采样";
+"compat.diag.copy_report" = "复制诊断报告";
+"compat.diag.privacy_note" = "仅展示域名级配置摘要，绝不记录页面正文、Cookie、令牌、查询参数、路径、IP 或跨域内嵌帧内容。";
+
+/* Settings: About */
+"settings.about.subtitle" = "原生轻快的 macOS 侧滑网页空间";
+"settings.about.version" = "版本 1.2.10";
+"settings.about.cleanroom" = "基于 AppKit、SwiftUI 与 WebKit 原生构建，无任何遥测。";
+"settings.about.extensions_note" = "在 macOS 15.4 及更高版本上通过系统 WebKit 原生支持 Manifest V2 与 V3 网页扩展。";
+
+/* Welcome / Onboarding Window */
+"welcome.window_title" = "欢迎使用 Veypane";
+"welcome.heading" = "常用网页，一滑即达";
+"welcome.subheading" = "只需两步即可完成 Veypane 设置，随时从屏幕边缘唤出你的工作台。";
+"welcome.step1.title" = "1. 选择唤出位置与快捷键";
+"welcome.step1.caption" = "点击屏幕边缘或角落，或随时按下 %@ 唤出面板。";
+"welcome.step2.title" = "2. 辅助功能权限";
+"welcome.step2.caption" = "建议开启，以确保全局快捷键与边缘手势稳定响应。";
+"welcome.ax.granted" = "已获得辅助功能权限";
+"welcome.ax.not_granted" = "尚未开启辅助功能权限";
+"welcome.ax.grant_button" = "前往授权…";
+"welcome.try_now" = "立即体验";

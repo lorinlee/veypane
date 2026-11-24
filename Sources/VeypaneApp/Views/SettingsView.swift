@@ -1188,7 +1188,7 @@ public struct SettingsView: View {
                         Text("veypanectl show | hide | toggle | list | ui state | ui diagnostics")
                             .font(.system(.caption, design: .monospaced))
                             .textSelection(.enabled)
-                        Text("veypane://toggle · veypane://open?url=https://example.com (legacy sidelarkctl/slidecraftctl & sidelark:// / slidecraft:// also supported)")
+                        Text("veypane://toggle · veypane://open?url=https://example.com")
                             .font(.system(.caption, design: .monospaced))
                             .foregroundStyle(.secondary)
                             .textSelection(.enabled)

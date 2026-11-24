@@ -322,7 +322,7 @@ struct VeypaneCoreTests {
     @Test("Persistence round-trip, corrupt file recovery, v1 migration, and export/import")
     func persistenceAndMigration() throws {
         let tempRoot = FileManager.default.temporaryDirectory
-            .appendingPathComponent("SlideCraftTests-\(UUID().uuidString)", isDirectory: true)
+            .appendingPathComponent("VeypaneTests-\(UUID().uuidString)", isDirectory: true)
         defer { try? FileManager.default.removeItem(at: tempRoot) }
 
         let store = VeypaneStore(directoryURL: tempRoot)
@@ -470,7 +470,7 @@ struct VeypaneCoreTests {
         #expect(filters.contains(where: { $0.contains("ads\\.badtracker\\.test") }))
     }
 
-    // MARK: - 7. URL Scheme, CLI (`slidecraftctl`), and Localhost Automation Server
+    // MARK: - 7. URL Scheme, CLI (`veypanectl`), and Localhost Automation Server
 
     private final class MockIPCSender: IPCSender, @unchecked Sendable {
         var actions: [VeypaneAutomationAction] = []
@@ -479,9 +479,9 @@ struct VeypaneCoreTests {
         }
     }
 
-    @Test("URL scheme parsing & slidecraftctl CLI operations in isolated store")
+    @Test("URL scheme parsing & veypanectl CLI operations in isolated store")
     func urlSchemeAndCLI() {
-        let openURL = URL(string: "slidecraft://open?url=https%3A%2F%2Fswift.org&pad=Search")!
+        let openURL = URL(string: "veypane://open?url=https%3A%2F%2Fswift.org&pad=Search")!
         let parsed = VeypaneURLCommand.parse(openURL)
         #expect(parsed == .openURL(url: URL(string: "https://swift.org")!, padQuery: "Search", inNewPad: false))
 
@@ -489,26 +489,26 @@ struct VeypaneCoreTests {
         #expect(roundTrip?.absoluteString == "veypane://toggle")
 
         let tempDir = FileManager.default.temporaryDirectory
-            .appendingPathComponent("SlideCraftCLI-\(UUID().uuidString)", isDirectory: true)
+            .appendingPathComponent("VeypaneCLI-\(UUID().uuidString)", isDirectory: true)
         defer { try? FileManager.default.removeItem(at: tempDir) }
 
         let ipc = MockIPCSender()
         let addOut = VeypaneCLIRunner.run(
-            arguments: ["slidecraftctl", "--store", tempDir.path, "add", "docs.swift.org", "--title", "Swift Docs"],
+            arguments: ["veypanectl", "--store", tempDir.path, "add", "docs.swift.org", "--title", "Swift Docs"],
             ipcSender: ipc
         )
         #expect(addOut.exitCode == 0)
         #expect(addOut.stdout.contains("Swift Docs"))
 
         let listOut = VeypaneCLIRunner.run(
-            arguments: ["slidecraftctl", "--store", tempDir.path, "--json", "list"],
+            arguments: ["veypanectl", "--store", tempDir.path, "--json", "list"],
             ipcSender: ipc
         )
         #expect(listOut.exitCode == 0)
         #expect(listOut.stdout.contains("https:\\/\\/docs.swift.org") || listOut.stdout.contains("https://docs.swift.org"))
 
         let toggleOut = VeypaneCLIRunner.run(
-            arguments: ["slidecraftctl", "toggle"],
+            arguments: ["veypanectl", "toggle"],
             ipcSender: ipc
         )
         #expect(toggleOut.exitCode == 0)
@@ -694,27 +694,27 @@ struct VeypaneCoreTests {
         }
 
         // CLI export + merge import + select + open + remove
-        let dirA = FileManager.default.temporaryDirectory.appendingPathComponent("SlideCraftMergeA-\(UUID().uuidString)", isDirectory: true)
-        let dirB = FileManager.default.temporaryDirectory.appendingPathComponent("SlideCraftMergeB-\(UUID().uuidString)", isDirectory: true)
+        let dirA = FileManager.default.temporaryDirectory.appendingPathComponent("VeypaneMergeA-\(UUID().uuidString)", isDirectory: true)
+        let dirB = FileManager.default.temporaryDirectory.appendingPathComponent("VeypaneMergeB-\(UUID().uuidString)", isDirectory: true)
         defer {
             try? FileManager.default.removeItem(at: dirA)
             try? FileManager.default.removeItem(at: dirB)
         }
         let ipc = MockIPCSender()
-        _ = VeypaneCLIRunner.run(arguments: ["slidecraftctl", "--store", dirA.path, "add", "https://webkit.org", "--title", "WebKit"], ipcSender: ipc)
+        _ = VeypaneCLIRunner.run(arguments: ["veypanectl", "--store", dirA.path, "add", "https://webkit.org", "--title", "WebKit"], ipcSender: ipc)
         let exportFile = dirA.appendingPathComponent("exported.json")
-        #expect(VeypaneCLIRunner.run(arguments: ["slidecraftctl", "--store", dirA.path, "export", exportFile.path], ipcSender: ipc).exitCode == 0)
+        #expect(VeypaneCLIRunner.run(arguments: ["veypanectl", "--store", dirA.path, "export", exportFile.path], ipcSender: ipc).exitCode == 0)
 
-        _ = VeypaneCLIRunner.run(arguments: ["slidecraftctl", "--store", dirB.path, "add", "https://swift.org", "--title", "Swift"], ipcSender: ipc)
-        #expect(VeypaneCLIRunner.run(arguments: ["slidecraftctl", "--store", dirB.path, "import", exportFile.path, "--merge"], ipcSender: ipc).exitCode == 0)
+        _ = VeypaneCLIRunner.run(arguments: ["veypanectl", "--store", dirB.path, "add", "https://swift.org", "--title", "Swift"], ipcSender: ipc)
+        #expect(VeypaneCLIRunner.run(arguments: ["veypanectl", "--store", dirB.path, "import", exportFile.path, "--merge"], ipcSender: ipc).exitCode == 0)
 
-        let mergedList = VeypaneCLIRunner.run(arguments: ["slidecraftctl", "--store", dirB.path, "list"], ipcSender: ipc)
+        let mergedList = VeypaneCLIRunner.run(arguments: ["veypanectl", "--store", dirB.path, "list"], ipcSender: ipc)
         #expect(mergedList.stdout.contains("WebKit"))
         #expect(mergedList.stdout.contains("Swift"))
 
-        #expect(VeypaneCLIRunner.run(arguments: ["slidecraftctl", "--store", dirB.path, "select", "WebKit"], ipcSender: ipc).exitCode == 0)
-        #expect(VeypaneCLIRunner.run(arguments: ["slidecraftctl", "--store", dirB.path, "open", "https://apple.com", "--pad", "WebKit"], ipcSender: ipc).exitCode == 0)
-        #expect(VeypaneCLIRunner.run(arguments: ["slidecraftctl", "--store", dirB.path, "remove", "WebKit"], ipcSender: ipc).exitCode == 0)
+        #expect(VeypaneCLIRunner.run(arguments: ["veypanectl", "--store", dirB.path, "select", "WebKit"], ipcSender: ipc).exitCode == 0)
+        #expect(VeypaneCLIRunner.run(arguments: ["veypanectl", "--store", dirB.path, "open", "https://apple.com", "--pad", "WebKit"], ipcSender: ipc).exitCode == 0)
+        #expect(VeypaneCLIRunner.run(arguments: ["veypanectl", "--store", dirB.path, "remove", "WebKit"], ipcSender: ipc).exitCode == 0)
 
         // MCP initialize + tools/list + run_limited_js when allowLimitedJS == true
         let bridge = MockAutomationBridge()
@@ -728,7 +728,7 @@ struct VeypaneCoreTests {
 
         var initReq = URLRequest(url: URL(string: "http://127.0.0.1:\(port)/mcp")!)
         initReq.httpMethod = "POST"
-        initReq.setValue("tok999", forHTTPHeaderField: "X-SlideCraft-Token")
+        initReq.setValue("tok999", forHTTPHeaderField: "X-Veypane-Token")
         initReq.httpBody = Data(#"{"jsonrpc":"2.0","id":10,"method":"initialize"}"#.utf8)
         let (initData, initResp) = try await URLSession.shared.data(for: initReq)
         #expect((initResp as? HTTPURLResponse)?.statusCode == 200)
@@ -736,7 +736,7 @@ struct VeypaneCoreTests {
 
         var jsReq = URLRequest(url: URL(string: "http://127.0.0.1:\(port)/mcp")!)
         jsReq.httpMethod = "POST"
-        jsReq.setValue("tok999", forHTTPHeaderField: "X-SlideCraft-Token")
+        jsReq.setValue("tok999", forHTTPHeaderField: "X-Veypane-Token")
         jsReq.httpBody = Data(#"{"jsonrpc":"2.0","id":11,"method":"tools/call","params":{"name":"run_limited_js","arguments":{"script":"21*2"}}}"#.utf8)
         let (jsData, jsResp) = try await URLSession.shared.data(for: jsReq)
         #expect((jsResp as? HTTPURLResponse)?.statusCode == 200)
@@ -872,7 +872,7 @@ struct VeypaneCoreTests {
     @Test("Pad strip drag-reorder persistence round-trip in VeypaneStore")
     func padStripReorderPersistence() throws {
         let tempDir = FileManager.default.temporaryDirectory
-            .appendingPathComponent("SlideCraftReorder-\(UUID().uuidString)", isDirectory: true)
+            .appendingPathComponent("VeypaneReorder-\(UUID().uuidString)", isDirectory: true)
         defer { try? FileManager.default.removeItem(at: tempDir) }
 
         let store = VeypaneStore(directoryURL: tempDir)
@@ -1017,10 +1017,10 @@ struct VeypaneCoreTests {
         #expect(L10n.string("welcome.try_now", language: "zh-Hans") == "立即体验")
     }
 
-    @Test("UI verification state file and slidecraftctl ui subcommands")
+    @Test("UI verification state file and veypanectl ui subcommands")
     func uiStateAndCLIVerificationHooks() throws {
         let tempDir = FileManager.default.temporaryDirectory
-            .appendingPathComponent("SlideCraftUIState-\(UUID().uuidString)", isDirectory: true)
+            .appendingPathComponent("VeypaneUIState-\(UUID().uuidString)", isDirectory: true)
         defer { try? FileManager.default.removeItem(at: tempDir) }
 
         let store = VeypaneStore(directoryURL: tempDir)
@@ -1042,7 +1042,7 @@ struct VeypaneCoreTests {
 
         let ipc = MockIPCSender()
         let stateOut = VeypaneCLIRunner.run(
-            arguments: ["slidecraftctl", "--store", tempDir.path, "ui", "state"],
+            arguments: ["veypanectl", "--store", tempDir.path, "ui", "state"],
             ipcSender: ipc
         )
         #expect(stateOut.exitCode == 0)
@@ -1050,14 +1050,14 @@ struct VeypaneCoreTests {
         #expect(stateOut.stdout.contains("\"statusItem\""))
 
         let settingsOut = VeypaneCLIRunner.run(
-            arguments: ["slidecraftctl", "ui", "open-settings", "trigger"],
+            arguments: ["veypanectl", "ui", "open-settings", "trigger"],
             ipcSender: ipc
         )
         #expect(settingsOut.exitCode == 0)
         #expect(ipc.actions.contains(.openSettings(pane: "trigger")))
 
         let welcomeOut = VeypaneCLIRunner.run(
-            arguments: ["slidecraftctl", "ui", "show-welcome"],
+            arguments: ["veypanectl", "ui", "show-welcome"],
             ipcSender: ipc
         )
         #expect(welcomeOut.exitCode == 0)
@@ -1128,8 +1128,8 @@ struct VeypaneCoreTests {
     @Test("ZIP nested-manifest detection, untouched extension copy, CRX3 install, and CLI lifecycle")
     func zipNestedManifestAndExtensionInstallLifecycle() throws {
         let fm = FileManager.default
-        let workDir = fm.temporaryDirectory.appendingPathComponent("SlideCraftExtPkg-\(UUID().uuidString)", isDirectory: true)
-        let storeDir = fm.temporaryDirectory.appendingPathComponent("SlideCraftExtStore-\(UUID().uuidString)", isDirectory: true)
+        let workDir = fm.temporaryDirectory.appendingPathComponent("VeypaneExtPkg-\(UUID().uuidString)", isDirectory: true)
+        let storeDir = fm.temporaryDirectory.appendingPathComponent("VeypaneExtStore-\(UUID().uuidString)", isDirectory: true)
         defer {
             try? fm.removeItem(at: workDir)
             try? fm.removeItem(at: storeDir)
@@ -1183,10 +1183,10 @@ struct VeypaneCoreTests {
         let crxFile = workDir.appendingPathComponent("nested-ext.crx")
         try crx3Data.write(to: crxFile)
 
-        // Install from .zip via slidecraftctl extensions add
+        // Install from .zip via veypanectl extensions add
         let ipc = MockIPCSender()
         let addOut = VeypaneCLIRunner.run(
-            arguments: ["slidecraftctl", "--store", storeDir.path, "extensions", "add", zipFile.path],
+            arguments: ["veypanectl", "--store", storeDir.path, "extensions", "add", zipFile.path],
             ipcSender: ipc
         )
         #expect(addOut.exitCode == 0)
@@ -1223,26 +1223,26 @@ struct VeypaneCoreTests {
 
         // CLI list (--json), disable, enable, command, remove
         let listJSON = VeypaneCLIRunner.run(
-            arguments: ["slidecraftctl", "--store", storeDir.path, "--json", "extensions", "list"],
+            arguments: ["veypanectl", "--store", storeDir.path, "--json", "extensions", "list"],
             ipcSender: ipc
         )
         #expect(listJSON.exitCode == 0)
         #expect(listJSON.stdout.contains("Sample Page Translator"))
 
         #expect(VeypaneCLIRunner.run(
-            arguments: ["slidecraftctl", "--store", storeDir.path, "extensions", "disable", ext.id],
+            arguments: ["veypanectl", "--store", storeDir.path, "extensions", "disable", ext.id],
             ipcSender: ipc
         ).exitCode == 0)
         #expect(store.load().state.installedExtensions.first?.enabled == false)
 
         #expect(VeypaneCLIRunner.run(
-            arguments: ["slidecraftctl", "--store", storeDir.path, "extensions", "enable", ext.id],
+            arguments: ["veypanectl", "--store", storeDir.path, "extensions", "enable", ext.id],
             ipcSender: ipc
         ).exitCode == 0)
         #expect(store.load().state.installedExtensions.first?.enabled == true)
 
         #expect(VeypaneCLIRunner.run(
-            arguments: ["slidecraftctl", "--store", storeDir.path, "extensions", "command", ext.id, "toggleTranslatePage"],
+            arguments: ["veypanectl", "--store", storeDir.path, "extensions", "command", ext.id, "toggleTranslatePage"],
             ipcSender: ipc
         ).exitCode == 0)
         #expect(ipc.actions.contains(.performExtensionCommand(
@@ -1252,7 +1252,7 @@ struct VeypaneCoreTests {
         )))
 
         #expect(VeypaneCLIRunner.run(
-            arguments: ["slidecraftctl", "--store", storeDir.path, "extensions", "remove", ext.id],
+            arguments: ["veypanectl", "--store", storeDir.path, "extensions", "remove", ext.id],
             ipcSender: ipc
         ).exitCode == 0)
         #expect(store.load().state.installedExtensions.isEmpty)
@@ -1262,7 +1262,7 @@ struct VeypaneCoreTests {
     @Test("InstalledExtension persistence, v4 -> v5 migration, and legacy panel width (34% / 653 pt) migration")
     func extensionPersistenceAndPanelWidthDefaultMigration() throws {
         let tempDir = FileManager.default.temporaryDirectory
-            .appendingPathComponent("SlideCraftMigV5-\(UUID().uuidString)", isDirectory: true)
+            .appendingPathComponent("VeypaneMigV5-\(UUID().uuidString)", isDirectory: true)
         defer { try? FileManager.default.removeItem(at: tempDir) }
         try FileManager.default.createDirectory(at: tempDir, withIntermediateDirectories: true)
 
@@ -1443,7 +1443,7 @@ struct VeypaneCoreTests {
         await server.stop()
     }
 
-    // MARK: - 11. Round 5 Sidelark Rename, Transient Address Bar, Transition Guard, Favicon & Compatibility Tests
+    // MARK: - 11. Round 5 Branding, Transient Address Bar, Transition Guard, Favicon & Compatibility Tests
 
     @Test("Transient AddressBarStateMachine covers hidden, new-pad, Cmd+L edit, draft edits, Esc cancel, and submit")
     func transientAddressBarStateMachineFlows() {
@@ -1665,7 +1665,7 @@ struct VeypaneCoreTests {
 
         // 3. Schema v5 -> v6 migration preserves hand-renamed existing titles while keeping automatic ones unlocked
         let tempDir = FileManager.default.temporaryDirectory
-            .appendingPathComponent("SidelarkMigV6-\(UUID().uuidString)", isDirectory: true)
+            .appendingPathComponent("VeypaneMigV6-\(UUID().uuidString)", isDirectory: true)
         defer { try? FileManager.default.removeItem(at: tempDir) }
         try FileManager.default.createDirectory(at: tempDir, withIntermediateDirectories: true)
 
@@ -1710,21 +1710,19 @@ struct VeypaneCoreTests {
         #expect(migrated.pads[1].hasCustomTitle == false) // History-matched page title stays automatic!
     }
 
-    @Test("Veypane branding preserves com.slidecraft.app, Application Support/SlideCraft, CLI/URL aliases, and safe diagnostics")
-    func sidelarkBrandingDataPathsAndDiagnostics() throws {
+    @Test("Veypane branding uses canonical com.veypane.app, Application Support/Veypane, veypanectl, veypane://, and safe diagnostics")
+    func veypaneBrandingDataPathsAndDiagnostics() throws {
         #expect(AppBrandIdentity.productName == "Veypane")
         #expect(AppBrandIdentity.appBundleName == "Veypane.app")
         #expect(AppBrandIdentity.appArchiveName == "Veypane.zip")
-        #expect(AppBrandIdentity.bundleIdentifier == "com.slidecraft.app")
-        #expect(AppBrandIdentity.applicationSupportFolderName == "SlideCraft")
-        #expect(AppBrandIdentity.bundleExecutableName == "SlideCraftApp")
-        #expect(!AppBrandIdentity.productName.lowercased().contains("craft"))
-        #expect(!AppBrandIdentity.productName.lowercased().contains("sidelark"))
-        #expect(!AppBrandIdentity.productName.lowercased().contains("slidepad"))
+        #expect(AppBrandIdentity.bundleIdentifier == "com.veypane.app")
+        #expect(AppBrandIdentity.urlSchemeBundleName == "com.veypane.urlscheme")
+        #expect(AppBrandIdentity.applicationSupportFolderName == "Veypane")
+        #expect(AppBrandIdentity.bundleExecutableName == "VeypaneApp")
 
-        // Default store preserves ~/Library/Application Support/SlideCraft path
+        // Default store uses ~/Library/Application Support/Veypane path
         let defaultStore = VeypaneStore()
-        #expect(defaultStore.directoryURL.lastPathComponent == "SlideCraft")
+        #expect(defaultStore.directoryURL.lastPathComponent == "Veypane")
 
         // Localization in en & zh-Hans uses Veypane
         #expect(L10n.string("app.name", language: "en") == "Veypane")
@@ -1736,14 +1734,15 @@ struct VeypaneCoreTests {
         #expect(L10n.string("welcome.window_title", language: "en") == "Welcome to Veypane")
         #expect(L10n.string("welcome.window_title", language: "zh-Hans") == "欢迎使用 Veypane")
 
-        // Both sidelark:// and slidecraft:// URL schemes parse identically
-        let sidelarkURL = URL(string: "sidelark://open?url=https%3A%2F%2Fwebkit.org&new=1")!
-        let legacyURL = URL(string: "slidecraft://open?url=https%3A%2F%2Fwebkit.org&new=1")!
-        #expect(VeypaneURLCommand.parse(sidelarkURL) == VeypaneURLCommand.parse(legacyURL))
+        // Primary veypane:// URL scheme parses cleanly and unsupported schemes are rejected
+        let primaryURL = URL(string: "veypane://open?url=https%3A%2F%2Fwebkit.org&new=1")!
+        #expect(VeypaneURLCommand.parse(primaryURL) == .openURL(url: URL(string: "https://webkit.org")!, padQuery: nil, inNewPad: true))
+        let unsupportedURL = URL(string: "otherapp://open?url=https%3A%2F%2Fwebkit.org&new=1")!
+        #expect(VeypaneURLCommand.parse(unsupportedURL) == nil)
 
-        // Both sidelarkctl and slidecraftctl work + `ui diagnostics` outputs counters
+        // veypanectl works + `ui diagnostics` outputs counters
         let tempDir = FileManager.default.temporaryDirectory
-            .appendingPathComponent("SidelarkDiag-\(UUID().uuidString)", isDirectory: true)
+            .appendingPathComponent("VeypaneDiag-\(UUID().uuidString)", isDirectory: true)
         defer { try? FileManager.default.removeItem(at: tempDir) }
         let store = VeypaneStore(directoryURL: tempDir)
         let diagCounters = RuntimeDiagnosticsCounters(
@@ -1771,15 +1770,15 @@ struct VeypaneCoreTests {
         )
 
         let ipc = MockIPCSender()
-        let sidelarkHelp = VeypaneCLIRunner.run(arguments: ["/usr/local/bin/sidelarkctl", "--help"], ipcSender: ipc)
-        #expect(sidelarkHelp.stdout.contains("sidelarkctl — Veypane"))
-        let sidelarkScheme = VeypaneCLIRunner.run(arguments: ["sidelarkctl", "url", "toggle"], ipcSender: ipc)
-        #expect(sidelarkScheme.stdout.trimmingCharacters(in: .whitespacesAndNewlines) == "sidelark://toggle")
-        let legacyScheme = VeypaneCLIRunner.run(arguments: ["slidecraftctl", "url", "toggle"], ipcSender: ipc)
-        #expect(legacyScheme.stdout.trimmingCharacters(in: .whitespacesAndNewlines) == "slidecraft://toggle")
+        let veypaneHelp = VeypaneCLIRunner.run(arguments: ["/usr/local/bin/veypanectl", "--help"], ipcSender: ipc)
+        #expect(veypaneHelp.stdout.contains("veypanectl — Veypane"))
+        let veypaneScheme = VeypaneCLIRunner.run(arguments: ["veypanectl", "url", "toggle"], ipcSender: ipc)
+        #expect(veypaneScheme.stdout.trimmingCharacters(in: .whitespacesAndNewlines) == "veypane://toggle")
+        let fallbackScheme = VeypaneCLIRunner.run(arguments: ["custom-alias", "url", "toggle"], ipcSender: ipc)
+        #expect(fallbackScheme.stdout.trimmingCharacters(in: .whitespacesAndNewlines) == "veypane://toggle")
 
         let diagOut = VeypaneCLIRunner.run(
-            arguments: ["sidelarkctl", "--store", tempDir.path, "ui", "diagnostics"],
+            arguments: ["veypanectl", "--store", tempDir.path, "ui", "diagnostics"],
             ipcSender: ipc
         )
         #expect(diagOut.exitCode == 0)
@@ -1840,7 +1839,8 @@ struct VeypaneCoreTests {
             let bundlePlistURL = packagedApp.appendingPathComponent("Contents/Info.plist")
             let plistDict = try #require(NSDictionary(contentsOf: bundlePlistURL) as? [String: Any])
             #expect(plistDict["CFBundleIconFile"] as? String == "Veypane")
-            #expect(plistDict["CFBundleIdentifier"] as? String == "com.slidecraft.app")
+            #expect(plistDict["CFBundleIdentifier"] as? String == "com.veypane.app")
+            #expect(plistDict["CFBundleExecutable"] as? String == "VeypaneApp")
             #expect(FileManager.default.fileExists(atPath: packagedApp.appendingPathComponent("Contents/Resources/Veypane.icns").path))
 
             let wsIcon = NSWorkspace.shared.icon(forFile: packagedApp.path)
@@ -2163,7 +2163,7 @@ struct VeypaneCoreTests {
         }
 
         func start() async throws -> UInt16 {
-            let queue = DispatchQueue(label: "sidelark.test.loopback.fixture")
+            let queue = DispatchQueue(label: "veypane.test.loopback.fixture")
             listener.newConnectionHandler = { [weak self] conn in
                 self?.handleConnection(conn, queue: queue)
             }
@@ -2317,7 +2317,7 @@ struct VeypaneCoreTests {
         let delegate = HeadlessWebKitDiagnosticProbe()
         let webView = WKWebView(frame: CGRect(x: 0, y: 0, width: 800, height: 600), configuration: config)
         webView.navigationDelegate = delegate
-        webView.customUserAgent = nil // Native WebKit mode (same as Sidelark default)
+        webView.customUserAgent = nil // Native WebKit mode (same as Veypane default)
 
         let fixtureURL = URL(string: "http://127.0.0.1:\(port)/main?session=secretSessionToken")!
         webView.load(URLRequest(url: fixtureURL))
@@ -2863,7 +2863,7 @@ struct VeypaneCoreTests {
         }
 
         func start() async throws -> UInt16 {
-            let queue = DispatchQueue(label: "sidelark.test.nav.lifecycle")
+            let queue = DispatchQueue(label: "veypane.test.nav.lifecycle")
             listener.newConnectionHandler = { [weak self] conn in
                 self?.handle(conn, queue: queue)
             }
@@ -3061,7 +3061,7 @@ struct VeypaneCoreTests {
         let authURL = URL(string: "https://example.com/oauth/authorize")!
         let blankURL = URL(string: "about:blank")!
         let mailURL = URL(string: "mailto:support@example.com")!
-        let appSchemeURL = URL(string: "sidelark://toggle")!
+        let appSchemeURL = URL(string: "veypane://toggle")!
 
         // 1. Nil or about:blank URL -> ephemeralPopupWindow (never creates blank persistent sidebar pads)
         #expect(PopupNavigationPolicy.classifyCreateWebView(
@@ -3136,7 +3136,7 @@ struct VeypaneCoreTests {
     @MainActor
     func authorizedNativeClipboardAndResponderEditingAcceptance() async throws {
         let outDir = FileManager.default.temporaryDirectory
-            .appendingPathComponent("SidelarkAuthorizedClipboardTest-\(UUID().uuidString)", isDirectory: true)
+            .appendingPathComponent("VeypaneAuthorizedClipboardTest-\(UUID().uuidString)", isDirectory: true)
         defer {
             // Reinforce synthetic exit marker in case of early throw; never read or restore previous clipboard
             NSPasteboard.general.clearContents()
@@ -3247,7 +3247,7 @@ struct VeypaneCoreTests {
     @MainActor
     func productionPopupDelegateAndTargetFrameNilLoopbackAcceptance() async throws {
         let outDir = FileManager.default.temporaryDirectory
-            .appendingPathComponent("SidelarkPopupAcceptanceTest-\(UUID().uuidString)", isDirectory: true)
+            .appendingPathComponent("VeypanePopupAcceptanceTest-\(UUID().uuidString)", isDirectory: true)
         defer { try? FileManager.default.removeItem(at: outDir) }
 
         let reportURL = outDir.appendingPathComponent("popup-acceptance-probe.json")
@@ -3426,7 +3426,7 @@ struct VeypaneCoreTests {
     @MainActor
     func outsideClickProductionProbeAcceptance() async throws {
         let outDir = FileManager.default.temporaryDirectory
-            .appendingPathComponent("SidelarkOutsideClickTest-\(UUID().uuidString)", isDirectory: true)
+            .appendingPathComponent("VeypaneOutsideClickTest-\(UUID().uuidString)", isDirectory: true)
         defer { try? FileManager.default.removeItem(at: outDir) }
 
         let reportURL = outDir.appendingPathComponent("outside-click-probe.json")
@@ -3461,18 +3461,18 @@ struct VeypaneCoreTests {
     }
 
     @Test(
-        "Genuine OS CGEvent mouse outside-click acceptance (opt-in via SIDELARK_RUN_OS_MOUSE_TESTS=1)",
-        .enabled(if: (ProcessInfo.processInfo.environment["VEYPANE_RUN_OS_MOUSE_TESTS"] == "1" || ProcessInfo.processInfo.environment["SIDELARK_RUN_OS_MOUSE_TESTS"] == "1"))
+        "Genuine OS CGEvent mouse outside-click acceptance (opt-in via VEYPANE_RUN_OS_MOUSE_TESTS=1)",
+        .enabled(if: ProcessInfo.processInfo.environment["VEYPANE_RUN_OS_MOUSE_TESTS"] == "1")
     )
     @MainActor
     func genuineOSOutsideClickAcceptance() async throws {
         let env = ProcessInfo.processInfo.environment
-        let customOutPath = env["SIDELARK_OS_MOUSE_REPORT_DIR"]?.trimmingCharacters(in: .whitespacesAndNewlines)
+        let customOutPath = env["VEYPANE_OS_MOUSE_REPORT_DIR"]?.trimmingCharacters(in: .whitespacesAndNewlines)
         let usesCustomDir = (customOutPath?.isEmpty == false)
         let outDir = usesCustomDir
             ? URL(fileURLWithPath: customOutPath!, isDirectory: true)
             : FileManager.default.temporaryDirectory.appendingPathComponent(
-                "SidelarkOSOutsideClickTest-\(UUID().uuidString)",
+                "VeypaneOSOutsideClickTest-\(UUID().uuidString)",
                 isDirectory: true
             )
         defer {
@@ -3484,7 +3484,7 @@ struct VeypaneCoreTests {
         let report = try await NativeOSOutsideClickAcceptanceRunner.runAcceptance(
             into: outDir,
             reportFilename: NativeOSOutsideClickAcceptanceRunner.defaultReportFilename,
-            executionContext: "Opt-in Swift Testing real OS CGEvent acceptance (SIDELARK_RUN_OS_MOUSE_TESTS=1)"
+            executionContext: "Opt-in Swift Testing real OS CGEvent acceptance (VEYPANE_RUN_OS_MOUSE_TESTS=1)"
         )
 
         #expect(report.cgPostEventAccess == true)
@@ -3633,7 +3633,7 @@ struct VeypaneCoreTests {
         if !app.isRunning { app.finishLaunching() }
 
         let tempDir = FileManager.default.temporaryDirectory.appendingPathComponent(
-            "SidelarkSyntheticResizeTest-\(UUID().uuidString)",
+            "VeypaneSyntheticResizeTest-\(UUID().uuidString)",
             isDirectory: true
         )
         defer { try? FileManager.default.removeItem(at: tempDir) }
@@ -3975,7 +3975,7 @@ struct VeypaneCoreTests {
         // NOTE: Uses OWN synthetic `.app`/`.appex` fixtures in temporaryDirectory; does NOT prove compatibility
         // with any third-party Mac App Store extension (such as Immersive Translate).
         let fm = FileManager.default
-        let tempRoot = fm.temporaryDirectory.appendingPathComponent("SidelarkSafariExtCoreTest-\(UUID().uuidString)", isDirectory: true)
+        let tempRoot = fm.temporaryDirectory.appendingPathComponent("VeypaneSafariExtCoreTest-\(UUID().uuidString)", isDirectory: true)
         defer { try? fm.removeItem(at: tempRoot) }
         try fm.createDirectory(at: tempRoot, withIntermediateDirectories: true)
 
@@ -4007,7 +4007,7 @@ struct VeypaneCoreTests {
             _ = try ExtensionPackageInstaller.discoverSafariWebExtensions(in: emptyAppURL)
         }
 
-        // 2. Register in-place (no files copied into Sidelark's store)
+        // 2. Register in-place (no files copied into Veypane's store)
         let registered = try ExtensionPackageInstaller.registerSafariAppExtensions(from: appURL)
         #expect(registered.count == 1)
         var record = registered[0]
@@ -4019,7 +4019,7 @@ struct VeypaneCoreTests {
         #expect(record.sourceAppBuild == "10")
         #expect(!record.contextUniqueIdentifier.isEmpty)
 
-        // Simulate user customizing Sidelark's own permissions before app update
+        // Simulate user customizing Veypane's own permissions before app update
         record.websiteAccessMode = .specificSites
         record.allURLsGranted = false
         record.deniedPermissions = ["cookies"]
@@ -4073,7 +4073,7 @@ struct VeypaneCoreTests {
         // 5. CLI `extensions add <app>` -> `extensions refresh` -> `extensions remove` (never deletes containing `.app`!)
         let cliStoreDir = tempRoot.appendingPathComponent("CLIStore", isDirectory: true)
         let ipc = MockIPCSender()
-        let addOut = VeypaneCLIRunner.run(arguments: ["sidelarkctl", "--store", cliStoreDir.path, "extensions", "add", appURL.path], ipcSender: ipc)
+        let addOut = VeypaneCLIRunner.run(arguments: ["veypanectl", "--store", cliStoreDir.path, "extensions", "add", appURL.path], ipcSender: ipc)
         #expect(addOut.exitCode == 0)
         #expect(addOut.stdout.contains("Linked Safari extension"))
         #expect(addOut.stdout.contains("v2.1.0"))
@@ -4087,13 +4087,13 @@ struct VeypaneCoreTests {
             appexName: "SyntheticSafariExtV2.appex",
             manifestVersion: "2.2.0"
         )
-        let refreshOut = VeypaneCLIRunner.run(arguments: ["sidelarkctl", "--store", cliStoreDir.path, "extensions", "refresh"], ipcSender: ipc)
+        let refreshOut = VeypaneCLIRunner.run(arguments: ["veypanectl", "--store", cliStoreDir.path, "extensions", "refresh"], ipcSender: ipc)
         #expect(refreshOut.exitCode == 0)
         #expect(refreshOut.stdout.contains("2.1.0 -> 2.2.0"))
 
-        let rmOut = VeypaneCLIRunner.run(arguments: ["sidelarkctl", "--store", cliStoreDir.path, "extensions", "remove", updated.id], ipcSender: ipc)
+        let rmOut = VeypaneCLIRunner.run(arguments: ["veypanectl", "--store", cliStoreDir.path, "extensions", "remove", updated.id], ipcSender: ipc)
         #expect(rmOut.exitCode == 0)
-        // CRITICAL: Unlinking Safari extension in Sidelark must NEVER remove the installed `.app`!
+        // CRITICAL: Unlinking Safari extension in Veypane must NEVER remove the installed `.app`!
         #expect(fm.fileExists(atPath: appURL.path) == true)
 
         // Missing source detection after `.app` is deleted
@@ -4114,7 +4114,7 @@ struct VeypaneCoreTests {
         guard #available(macOS 15.4, *) else { return }
 
         let fm = FileManager.default
-        let tempRoot = fm.temporaryDirectory.appendingPathComponent("SidelarkSafariRuntimeTest-\(UUID().uuidString)", isDirectory: true)
+        let tempRoot = fm.temporaryDirectory.appendingPathComponent("VeypaneSafariRuntimeTest-\(UUID().uuidString)", isDirectory: true)
         defer { try? fm.removeItem(at: tempRoot) }
         try fm.createDirectory(at: tempRoot, withIntermediateDirectories: true)
 
@@ -4147,11 +4147,11 @@ struct VeypaneCoreTests {
         #expect(settingsBefore.sourceAppDisplayName == "SignedSyntheticSafari")
         #expect(settingsBefore.version == "1.0.0")
         #expect(settingsBefore.loadMode == .appExtensionBundle)
-        // Confirm zero extension files were copied into Sidelark's `Extensions/` store directory
+        // Confirm zero extension files were copied into Veypane's `Extensions/` store directory
         let copiedEntries = (try? fm.contentsOfDirectory(atPath: store.extensionsDirectoryURL.path)) ?? []
         #expect(copiedEntries.isEmpty)
 
-        // Configure Sidelark's own isolated permissions (never touching Safari)
+        // Configure Veypane's own isolated permissions (never touching Safari)
         manager.setWebsiteAccessMode(id: extID, mode: .specificSites)
         manager.addSpecificSitePattern(id: extID, pattern: "https://example.com/*")
 
@@ -4227,7 +4227,7 @@ struct VeypaneCoreTests {
         #expect(tamperedItem.isLoaded == false)
         #expect(tamperedItem.errors.contains(where: { $0.contains("code signature validation failed") }))
 
-        // 5. Removing linked Safari extensions clears Sidelark state without deleting any containing `.app`
+        // 5. Removing linked Safari extensions clears Veypane state without deleting any containing `.app`
         await manager.removeExtension(id: extID)
         await manager.removeExtension(id: unsignedID)
         await manager.removeExtension(id: tamperedID)
@@ -4241,7 +4241,7 @@ struct VeypaneCoreTests {
     @MainActor
     func sidebarMovePadPersistenceAndEscapeCancelDuringDrag() throws {
         let fm = FileManager.default
-        let tempDir = fm.temporaryDirectory.appendingPathComponent("SidelarkSidebarUnitTest-\(UUID().uuidString)", isDirectory: true)
+        let tempDir = fm.temporaryDirectory.appendingPathComponent("VeypaneSidebarUnitTest-\(UUID().uuidString)", isDirectory: true)
         defer { try? fm.removeItem(at: tempDir) }
 
         let store = VeypaneStore(directoryURL: tempDir)
@@ -4328,7 +4328,7 @@ struct VeypaneCoreTests {
     @MainActor
     func seamlessTopEdgeChromeMenubarClampAndUnobstructedNavigation() throws {
         _ = NSApplication.shared
-        let tempDir = FileManager.default.temporaryDirectory.appendingPathComponent("SidelarkT347Test-\(UUID().uuidString)", isDirectory: true)
+        let tempDir = FileManager.default.temporaryDirectory.appendingPathComponent("VeypaneT347Test-\(UUID().uuidString)", isDirectory: true)
         defer { try? FileManager.default.removeItem(at: tempDir) }
 
         let store = VeypaneStore(directoryURL: tempDir)
@@ -4403,7 +4403,7 @@ struct VeypaneCoreTests {
     @MainActor
     func t385DisableAnimationsPinAlwaysOnTopSwipeIsolationAndSettingsDecision() throws {
         _ = NSApplication.shared
-        let tempDir = FileManager.default.temporaryDirectory.appendingPathComponent("SidelarkT385Test-\(UUID().uuidString)", isDirectory: true)
+        let tempDir = FileManager.default.temporaryDirectory.appendingPathComponent("VeypaneT385Test-\(UUID().uuidString)", isDirectory: true)
         defer { try? FileManager.default.removeItem(at: tempDir) }
 
         // 1. Backward-compatible AppSettings decoding (`disableAnimations` defaults to false when absent, round-trips true)
@@ -4534,18 +4534,18 @@ struct VeypaneCoreTests {
     }
 
     @Test(
-        "Genuine OS CGEvent window resize acceptance on production SlideOverPanel & NSHostingView (opt-in via SIDELARK_RUN_OS_RESIZE_TESTS=1)",
-        .enabled(if: (ProcessInfo.processInfo.environment["VEYPANE_RUN_OS_RESIZE_TESTS"] == "1" || ProcessInfo.processInfo.environment["SIDELARK_RUN_OS_RESIZE_TESTS"] == "1"))
+        "Genuine OS CGEvent window resize acceptance on production SlideOverPanel & NSHostingView (opt-in via VEYPANE_RUN_OS_RESIZE_TESTS=1)",
+        .enabled(if: ProcessInfo.processInfo.environment["VEYPANE_RUN_OS_RESIZE_TESTS"] == "1")
     )
     @MainActor
     func genuineOSWindowResizeAcceptance() async throws {
         let env = ProcessInfo.processInfo.environment
-        let customOutPath = (env["VEYPANE_OS_RESIZE_REPORT_DIR"] ?? env["SIDELARK_OS_RESIZE_REPORT_DIR"])?.trimmingCharacters(in: .whitespacesAndNewlines)
+        let customOutPath = env["VEYPANE_OS_RESIZE_REPORT_DIR"]?.trimmingCharacters(in: .whitespacesAndNewlines)
         let usesCustomDir = (customOutPath?.isEmpty == false)
         let outDir = usesCustomDir
             ? URL(fileURLWithPath: customOutPath!, isDirectory: true)
             : FileManager.default.temporaryDirectory.appendingPathComponent(
-                "SidelarkOSWindowResizeTest-\(UUID().uuidString)",
+                "VeypaneOSWindowResizeTest-\(UUID().uuidString)",
                 isDirectory: true
             )
         defer {
@@ -4583,38 +4583,43 @@ struct VeypaneCoreTests {
         }
     }
 
-    @Test("Veypane display-only rename preserves all stable storage, bundle, IPC, URL, CLI, menu, and notification compatibility boundaries")
+    @Test("Veypane branding uses unified Veypane identifiers across storage, bundle, IPC, URL, CLI, menu, intents, and notifications")
     @MainActor
-    func veypaneDisplayBrandingAndStableCompatibilityBoundaryRegression() throws {
-        // 1. User-visible display branding uses Veypane (never Craft, Sidelark, or Slidepad)
+    func veypaneUnifiedIdentityRegression() throws {
+        // 1. Display and bundle branding use canonical Veypane identifiers
         #expect(AppBrandIdentity.productName == "Veypane")
         #expect(AppBrandIdentity.appBundleName == "Veypane.app")
         #expect(AppBrandIdentity.appArchiveName == "Veypane.zip")
 
-        // 2. All stable compatibility boundaries remain strictly unchanged
-        #expect(AppBrandIdentity.bundleIdentifier == "com.slidecraft.app")
-        #expect(AppBrandIdentity.applicationSupportFolderName == "SlideCraft")
-        #expect(AppBrandIdentity.bundleExecutableName == "SlideCraftApp")
+        // 2. Storage, bundle, IPC, URL, CLI, CSS rule, and notification identifiers use Veypane exclusively
+        #expect(AppBrandIdentity.bundleIdentifier == "com.veypane.app")
+        #expect(AppBrandIdentity.urlSchemeBundleName == "com.veypane.urlscheme")
+        #expect(AppBrandIdentity.applicationSupportFolderName == "Veypane")
+        #expect(AppBrandIdentity.bundleExecutableName == "VeypaneApp")
         #expect(AppBrandIdentity.primaryURLScheme == "veypane")
-        #expect(AppBrandIdentity.legacyURLScheme == "slidecraft")
-        #expect(AppBrandIdentity.supportedURLSchemes == ["veypane", "sidelark", "slidecraft"])
+        #expect(AppBrandIdentity.supportedURLSchemes == ["veypane"])
         #expect(AppBrandIdentity.primaryCLIName == "veypanectl")
-        #expect(AppBrandIdentity.legacyCLIName == "slidecraftctl")
-        #expect(VeypaneIPC.distributedNotificationName == Notification.Name("com.slidecraft.ipc.command"))
-        #expect(WebNotificationBridge.handlerName == "slidecraftNotify")
-        #expect(VeypaneStore().directoryURL.lastPathComponent == "SlideCraft")
+        #expect(AppBrandIdentity.supportedCLINames == ["veypanectl"])
+        #expect(VeypaneIPC.distributedNotificationName == Notification.Name("com.veypane.ipc.command"))
+        #expect(WebNotificationBridge.handlerName == "veypaneNotify")
+        #expect(WebNotificationBridge.bootstrapJavaScript.contains("window.__veypaneNotificationsInstalled"))
+        #expect(WebNotificationBridge.bootstrapJavaScript.contains("messageHandlers.veypaneNotify"))
+        #expect(VeypaneStore().directoryURL.lastPathComponent == "Veypane")
+        #expect(VeypaneStore.defaultiCloudSyncFolderURL.lastPathComponent == "Veypane")
+        #expect(VeypaneStore.syncSnapshotFileName == "veypane-sync.json")
+        let cssScript = try #require(ContentRulesEngine.makeCSSInjectionScript(css: "body {}", ruleID: UUID()))
+        #expect(cssScript.contains("veypane-css-"))
 
-        // 3. Menus, AppIntents, and Diagnostics reflect Veypane display name
+        // 3. Menus, AppIntents, and Diagnostics reflect Veypane branding
         let mainMenu = MainMenuBuilder.buildMainMenu()
         #expect(mainMenu.items.first?.title == "Veypane")
         #expect(mainMenu.items.first?.submenu?.title == "Veypane")
         #expect(SiteDiagnosticsReport.pauseModificationsScopeStatement.contains("Veypane"))
-        #expect(!SiteDiagnosticsReport.pauseModificationsScopeStatement.contains("Sidelark"))
-        #expect(String(localized: ToggleSlideCraftIntent.title) == "Toggle Veypane Panel")
-        #expect(String(localized: OpenSlideCraftPadIntent.title) == "Open URL in Veypane Pad")
-        #expect(String(localized: AddSlideCraftPadIntent.title) == "Add Veypane Pad")
+        #expect(String(localized: ToggleVeypaneIntent.title) == "Toggle Veypane Panel")
+        #expect(String(localized: OpenVeypanePadIntent.title) == "Open URL in Veypane Pad")
+        #expect(String(localized: AddVeypanePadIntent.title) == "Add Veypane Pad")
 
-        // 4. Both en and zh-Hans Localizable.strings have zero leftover Sidelark/SlideCraft user-visible brand strings
+        // 4. Both en and zh-Hans Localizable.strings resolve Veypane strings cleanly
         let repoRoot = URL(fileURLWithPath: #filePath)
             .deletingLastPathComponent()
             .deletingLastPathComponent()
@@ -4623,15 +4628,14 @@ struct VeypaneCoreTests {
             let stringsURL = repoRoot
                 .appendingPathComponent("Sources/VeypaneCore/Resources/\(lang).lproj/Localizable.strings")
             let raw = try String(contentsOf: stringsURL, encoding: .utf8)
-            #expect(!raw.localizedCaseInsensitiveContains("Sidelark"), "Leftover Sidelark string in \(lang) Localizable.strings")
-            #expect(!raw.localizedCaseInsensitiveContains("SlideCraft"), "Leftover SlideCraft string in \(lang) Localizable.strings")
+            #expect(raw.contains("Veypane"), "Expected Veypane branding in \(lang) Localizable.strings")
             #expect(L10n.string("app.name", language: lang) == "Veypane")
             #expect(L10n.string("settings.window_title", language: lang).contains("Veypane"))
             #expect(L10n.string("welcome.window_title", language: lang).contains("Veypane"))
             #expect(L10n.string("menu.quit", language: lang).contains("Veypane"))
         }
 
-        // 5. Packaging script displays Veypane while preserving stable bundle ID, executable, icon resource, and URL schemes
+        // 5. Packaging script produces pure Veypane bundle metadata, executable, CLI, icon, and URL scheme
         let bundleScript = try String(
             contentsOf: repoRoot.appendingPathComponent("scripts/bundle.sh"),
             encoding: .utf8
@@ -4640,12 +4644,11 @@ struct VeypaneCoreTests {
         #expect(bundleScript.contains("APP_ARCHIVE=\"$OUTPUT_DIR/Veypane.zip\""))
         #expect(bundleScript.contains("<key>CFBundleDisplayName</key>\n    <string>Veypane</string>"))
         #expect(bundleScript.contains("<key>CFBundleName</key>\n    <string>Veypane</string>"))
-        #expect(bundleScript.contains("<key>CFBundleIdentifier</key>\n    <string>com.slidecraft.app</string>"))
-        #expect(bundleScript.contains("<key>CFBundleExecutable</key>\n    <string>SlideCraftApp</string>"))
-        #expect(bundleScript.contains("<key>CFBundleURLName</key>\n            <string>com.slidecraft.urlscheme</string>"))
+        #expect(bundleScript.contains("<key>CFBundleIdentifier</key>\n    <string>com.veypane.app</string>"))
+        #expect(bundleScript.contains("<key>CFBundleExecutable</key>\n    <string>VeypaneApp</string>"))
+        #expect(bundleScript.contains("<key>CFBundleURLName</key>\n            <string>com.veypane.urlscheme</string>"))
         #expect(bundleScript.contains("<key>CFBundleIconFile</key>\n    <string>Veypane</string>"))
-        #expect(bundleScript.contains("<string>sidelark</string>"))
-        #expect(bundleScript.contains("<string>slidecraft</string>"))
+        #expect(bundleScript.contains("<string>veypane</string>"))
         #expect(bundleScript.contains("<key>CFBundleShortVersionString</key>\n    <string>\(AppBrandIdentity.marketingVersion)</string>"))
         #expect(bundleScript.contains("<key>CFBundleVersion</key>\n    <string>\(AppBrandIdentity.buildNumber)</string>"))
     }
@@ -5132,30 +5135,27 @@ struct VeypaneCoreTests {
         }
     }
 
-    @Test("t461 Veypane full rename, Bucket A compatibility aliases, legacy store/sync migration, MIT LICENSE, and 1.2.10 build 13 verification")
+    @Test("Veypane canonical interfaces, URL/CLI/HTTP auth enforcement, store/sync migration, MIT LICENSE, and 1.2.10 build 13 verification")
     @MainActor
-    func t461VeypaneRenameCompatibilityMigrationAndLicenseRegression() async throws {
-        // 1. Primary Veypane URL scheme + preserved sidelark:// and slidecraft:// aliases (and OmniboxParser support)
-        for scheme in ["veypane", "sidelark", "slidecraft"] {
-            let url = try #require(URL(string: "\(scheme)://open?url=https%3A%2F%2Fswift.org&pad=Docs"))
-            #expect(VeypaneURLCommand.parse(url) == .openURL(url: URL(string: "https://swift.org")!, padQuery: "Docs", inNewPad: false))
-            #expect(OmniboxParser.resolve(input: "\(scheme)://toggle") == .directURL(URL(string: "\(scheme)://toggle")!))
-        }
+    func veypaneCanonicalInterfacesMigrationAndLicenseRegression() async throws {
+        // 1. Primary Veypane URL scheme (and OmniboxParser support); unknown schemes rejected
+        let openURL = try #require(URL(string: "veypane://open?url=https%3A%2F%2Fswift.org&pad=Docs"))
+        #expect(VeypaneURLCommand.parse(openURL) == .openURL(url: URL(string: "https://swift.org")!, padQuery: "Docs", inNewPad: false))
+        #expect(OmniboxParser.resolve(input: "veypane://toggle") == .directURL(URL(string: "veypane://toggle")!))
+        #expect(VeypaneURLCommand.parse(try #require(URL(string: "unknownapp://toggle"))) == nil)
         #expect(VeypaneURLCommand.makeURL(for: .showPanel)?.absoluteString == "veypane://show")
 
-        // 2. Primary veypanectl + preserved sidelarkctl & slidecraftctl CLI aliases
+        // 2. Primary veypanectl CLI interface
         let ipc = MockIPCSender()
         #expect(VeypaneCLIRunner.run(arguments: ["veypanectl", "url", "toggle"], ipcSender: ipc).stdout.trimmingCharacters(in: .whitespacesAndNewlines) == "veypane://toggle")
-        #expect(VeypaneCLIRunner.run(arguments: ["sidelarkctl", "url", "toggle"], ipcSender: ipc).stdout.trimmingCharacters(in: .whitespacesAndNewlines) == "sidelark://toggle")
-        #expect(VeypaneCLIRunner.run(arguments: ["slidecraftctl", "url", "toggle"], ipcSender: ipc).stdout.trimmingCharacters(in: .whitespacesAndNewlines) == "slidecraft://toggle")
         let extUsage = VeypaneCLIRunner.run(arguments: ["veypanectl", "extensions", "unknown-cmd"], ipcSender: ipc)
         #expect(extUsage.exitCode == 2)
         #expect(extUsage.stderr.contains("Usage: veypanectl extensions"))
 
-        // 3. LocalAutomationServer accepts Authorization: Bearer, X-Veypane-Token, X-Sidelark-Token, and X-SlideCraft-Token
+        // 3. LocalAutomationServer accepts Authorization: Bearer and X-Veypane-Token only
         let bridge = MockAutomationBridge()
         let server = LocalAutomationServer(
-            settings: AutomationSettings(isEnabled: true, port: 0, authToken: "t461-secret", allowLimitedJS: false),
+            settings: AutomationSettings(isEnabled: true, port: 0, authToken: "veypane-secret", allowLimitedJS: false),
             bridge: bridge
         )
         try await server.start()
@@ -5164,10 +5164,8 @@ struct VeypaneCoreTests {
         let healthURL = URL(string: "http://127.0.0.1:\(port)/v1/health")!
 
         for (header, value) in [
-            ("Authorization", "Bearer t461-secret"),
-            ("X-Veypane-Token", "t461-secret"),
-            ("X-Sidelark-Token", "t461-secret"),
-            ("X-SlideCraft-Token", "t461-secret")
+            ("Authorization", "Bearer veypane-secret"),
+            ("X-Veypane-Token", "veypane-secret")
         ] {
             var req = URLRequest(url: healthURL)
             req.setValue(value, forHTTPHeaderField: header)
@@ -5176,64 +5174,69 @@ struct VeypaneCoreTests {
             #expect(http.statusCode == 200, "Expected 200 for auth header \(header)")
         }
 
+        // Unrecognized custom token header is rejected with 401
+        var badHeaderReq = URLRequest(url: healthURL)
+        badHeaderReq.setValue("veypane-secret", forHTTPHeaderField: "X-Other-Token")
+        let (_, badResp) = try await URLSession.shared.data(for: badHeaderReq)
+        #expect((badResp as? HTTPURLResponse)?.statusCode == 401)
+
         // MCP initialize reports Veypane + 1.2.10
         var mcpReq = URLRequest(url: URL(string: "http://127.0.0.1:\(port)/mcp")!)
         mcpReq.httpMethod = "POST"
-        mcpReq.setValue("t461-secret", forHTTPHeaderField: "X-Veypane-Token")
+        mcpReq.setValue("veypane-secret", forHTTPHeaderField: "X-Veypane-Token")
         mcpReq.httpBody = Data(#"{"jsonrpc":"2.0","id":1,"method":"initialize"}"#.utf8)
         let (mcpData, _) = try await URLSession.shared.data(for: mcpReq)
         let mcpText = String(decoding: mcpData, as: UTF8.self)
         #expect(mcpText.contains("\"name\":\"Veypane\""))
         #expect(mcpText.contains("\"version\":\"1.2.10\""))
 
-        // 4. Legacy Application Support/SlideCraft path, v1 workspace.json migration, and slidecraft-sync.json + veypane-sync.json compatibility
-        #expect(VeypaneStore().directoryURL.lastPathComponent == "SlideCraft")
-        #expect(VeypaneStore.defaultiCloudSyncFolderURL.lastPathComponent == "SlideCraft")
+        // 4. Canonical Application Support/Veypane path, v1 workspace.json schema migration, and veypane-sync.json
+        #expect(VeypaneStore().directoryURL.lastPathComponent == "Veypane")
+        #expect(VeypaneStore.defaultiCloudSyncFolderURL.lastPathComponent == "Veypane")
 
         let tempDir = FileManager.default.temporaryDirectory
-            .appendingPathComponent("VeypaneT461Compat-\(UUID().uuidString)", isDirectory: true)
+            .appendingPathComponent("VeypaneIdentity-\(UUID().uuidString)", isDirectory: true)
         defer { try? FileManager.default.removeItem(at: tempDir) }
         try FileManager.default.createDirectory(at: tempDir, withIntermediateDirectories: true)
 
-        let legacyV1JSON = """
+        let v1JSON = """
         {
           "schemaVersion": 1,
           "pads": [
             {
               "id": "11111111-1111-1111-1111-111111111111",
-              "title": "Legacy Custom Title",
+              "title": "Custom Title",
               "url": "https://example.com"
             }
           ]
         }
         """
-        try Data(legacyV1JSON.utf8).write(to: tempDir.appendingPathComponent("workspace.json"))
+        try Data(v1JSON.utf8).write(to: tempDir.appendingPathComponent("workspace.json"))
         let store = VeypaneStore(directoryURL: tempDir)
         let loaded = store.load()
         #expect(loaded.didRecoverFromCorruption == false)
         #expect(loaded.migratedFromVersion == 1)
-        #expect(loaded.state.pads.first?.title == "Legacy Custom Title")
+        #expect(loaded.state.pads.first?.title == "Custom Title")
         #expect(loaded.state.pads.first?.hasCustomTitle == true)
 
-        // Legacy slidecraft-sync.json is still written & read; newer veypane-sync.json is also respected
-        let syncDir = tempDir.appendingPathComponent("SyncCompat", isDirectory: true)
+        // veypane-sync.json is written & read as the canonical sync snapshot
+        let syncDir = tempDir.appendingPathComponent("SyncCanonical", isDirectory: true)
         var syncState = loaded.state
         syncState.settings.autoHibernateMinutes = 0
         syncState.updatedAt = Date().addingTimeInterval(120)
         try store.writeSyncSnapshot(for: syncState, toDirectory: syncDir)
-        #expect(FileManager.default.fileExists(atPath: syncDir.appendingPathComponent("slidecraft-sync.json").path))
-        let fromLegacySync = try #require(try store.loadNewerSyncSnapshotIfAvailable(fromDirectory: syncDir, currentState: WorkspaceState.makeDefault()))
-        #expect(fromLegacySync.settings.autoHibernateMinutes == 0)
+        #expect(FileManager.default.fileExists(atPath: syncDir.appendingPathComponent("veypane-sync.json").path))
+        let fromSync = try #require(try store.loadNewerSyncSnapshotIfAvailable(fromDirectory: syncDir, currentState: WorkspaceState.makeDefault()))
+        #expect(fromSync.settings.autoHibernateMinutes == 0)
 
         var newerVeypaneState = syncState
         newerVeypaneState.settings.autoHibernateMinutes = 240
         newerVeypaneState.updatedAt = Date().addingTimeInterval(360)
-        let veypaneBundle = SettingsExportBundle(from: newerVeypaneState, exportedAt: newerVeypaneState.updatedAt)
-        try VeypaneStore.makeEncoder().encode(veypaneBundle).write(to: syncDir.appendingPathComponent("veypane-sync.json"))
-        let fromVeypaneSync = try #require(try store.loadNewerSyncSnapshotIfAvailable(fromDirectory: syncDir, currentState: syncState))
-        #expect(fromVeypaneSync.settings.autoHibernateMinutes == 240)
+        try store.writeSyncSnapshot(for: newerVeypaneState, toDirectory: syncDir)
+        let fromUpdatedSync = try #require(try store.loadNewerSyncSnapshotIfAvailable(fromDirectory: syncDir, currentState: syncState))
+        #expect(fromUpdatedSync.settings.autoHibernateMinutes == 240)
 
-        // 5. Icon resource resolves Veypane.icns, MIT LICENSE & NOTICE.md present, bundle.sh registers veypane + legacy schemes
+        // 5. Icon resource resolves Veypane.icns, MIT LICENSE & NOTICE.md present, bundle.sh registers veypane only
         let iconURL = try #require(L10n.iconFileURL)
         #expect(iconURL.lastPathComponent == "Veypane.icns")
 
@@ -5250,7 +5253,7 @@ struct VeypaneCoreTests {
         let bundleScript = try String(contentsOf: repoRoot.appendingPathComponent("scripts/bundle.sh"), encoding: .utf8)
         #expect(bundleScript.contains("<string>veypane</string>"))
         #expect(bundleScript.contains("veypanectl"))
-        #expect(bundleScript.contains("sidelarkctl"))
-        #expect(bundleScript.contains("slidecraftctl"))
+        #expect(bundleScript.contains("VeypaneApp"))
+        #expect(bundleScript.contains("com.veypane.app"))
     }
 }

@@ -2,8 +2,7 @@ import Foundation
 
 public enum L10n {
     private static let bundleNames = [
-        "Veypane_VeypaneCore.bundle",
-        "SlideCraft_SlideCraftCore.bundle"
+        "Veypane_VeypaneCore.bundle"
     ]
 
     private static var resourceBundle: Bundle {
@@ -42,23 +41,21 @@ public enum L10n {
     }
 
     public static var iconFileURL: URL? {
-        let iconNames = [AppBrandIdentity.iconResourceName, AppBrandIdentity.legacyIconResourceName]
-        for iconName in iconNames {
-            if let mainIcon = Bundle.main.url(forResource: iconName, withExtension: "icns") {
-                return mainIcon
+        let iconName = AppBrandIdentity.iconResourceName
+        if let mainIcon = Bundle.main.url(forResource: iconName, withExtension: "icns") {
+            return mainIcon
+        }
+        if let execDir = Bundle.main.executableURL?.deletingLastPathComponent() {
+            let appIcon = execDir
+                .deletingLastPathComponent()
+                .appendingPathComponent("Resources", isDirectory: true)
+                .appendingPathComponent("\(iconName).icns", isDirectory: false)
+            if FileManager.default.fileExists(atPath: appIcon.path) {
+                return appIcon
             }
-            if let execDir = Bundle.main.executableURL?.deletingLastPathComponent() {
-                let appIcon = execDir
-                    .deletingLastPathComponent()
-                    .appendingPathComponent("Resources", isDirectory: true)
-                    .appendingPathComponent("\(iconName).icns", isDirectory: false)
-                if FileManager.default.fileExists(atPath: appIcon.path) {
-                    return appIcon
-                }
-            }
-            if let resIcon = resourceBundle.url(forResource: iconName, withExtension: "icns") {
-                return resIcon
-            }
+        }
+        if let resIcon = resourceBundle.url(forResource: iconName, withExtension: "icns") {
+            return resIcon
         }
         return nil
     }

@@ -178,9 +178,9 @@ public enum UISnapshotRenderer {
         try renderViewToPNG(addPadContainer, size: NSSize(width: 360, height: 340), to: addPadV5File)
         print(addPadV5File.path)
 
-        // Optional E5: If VEYPANE_SNAPSHOT_EXTENSION (or legacy SLIDECRAFT_SNAPSHOT_EXTENSION)=<folder> is set, install into tempStore,
+        // Optional E5: If VEYPANE_SNAPSHOT_EXTENSION=<folder> is set, install into tempStore,
         // run live Wikipedia page through the extension (up to 30 s), and render ours-panel-extension.png
-        let rawExtEnv = (ProcessInfo.processInfo.environment["VEYPANE_SNAPSHOT_EXTENSION"] ?? ProcessInfo.processInfo.environment["SLIDECRAFT_SNAPSHOT_EXTENSION"])?
+        let rawExtEnv = ProcessInfo.processInfo.environment["VEYPANE_SNAPSHOT_EXTENSION"]?
             .trimmingCharacters(in: .whitespacesAndNewlines)
         if let rawExtEnv, !rawExtEnv.isEmpty {
             try await renderExtensionSnapshotsAndProbe(

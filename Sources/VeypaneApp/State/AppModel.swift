@@ -1645,10 +1645,10 @@ public final class AppModel {
         window.styleMask = [.titled, .closable, .miniaturizable, .resizable]
         window.setContentSize(NSSize(width: 740, height: 520))
         window.minSize = NSSize(width: 660, height: 460)
-        if !window.setFrameUsingName("SlideCraftSettingsWindow") {
+        if !window.setFrameUsingName("VeypaneSettingsWindow") {
             window.center()
         }
-        window.setFrameAutosaveName("SlideCraftSettingsWindow")
+        window.setFrameAutosaveName("VeypaneSettingsWindow")
         window.isReleasedWhenClosed = false
         window.delegate = settingsWindowDelegate
         self.settingsWindow = window
@@ -1721,7 +1721,7 @@ public final class AppModel {
         do {
             if let json = try ContentRulesEngine.buildContentRuleListJSON(from: state.settings.contentBlocker) {
                 let compiled = try await WKContentRuleListStore.default().compileContentRuleList(
-                    forIdentifier: "SlideCraftContentRules",
+                    forIdentifier: "VeypaneContentRules",
                     encodedContentRuleList: json
                 )
                 self.compiledRuleList = compiled
@@ -1755,7 +1755,7 @@ public final class AppModel {
         }
     }
 
-    // MARK: - Automation Actions (`veypane://`, `veypanectl`, legacy `sidelark://`/`slidecraft://`, App Intents)
+    // MARK: - Automation Actions (`veypane://`, `veypanectl`, App Intents)
 
     public func handleAutomationAction(_ action: VeypaneAutomationAction) {
         switch action {

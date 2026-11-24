@@ -7,8 +7,7 @@ import VeypaneCore
 public enum SingleInstanceGuard {
     private static var lockFileDescriptor: Int32 = -1
 
-    /// Prevents legacy (`SlideCraft.app` / `Sidelark.app` / backups) and current (`Veypane.app`) bundles sharing
-    /// `com.slidecraft.app` from running simultaneously.
+    /// Prevents duplicate `Veypane.app` instances sharing `com.veypane.app` from running simultaneously.
     public static func ensureSingleRunningInstance(lockDirectoryURL: URL) -> Bool {
         let selfPID = ProcessInfo.processInfo.processIdentifier
 
@@ -28,7 +27,7 @@ public enum SingleInstanceGuard {
             return false
         }
 
-        // 2. Advisory non-blocking POSIX flock on Application Support/SlideCraft/instance.lock
+        // 2. Advisory non-blocking POSIX flock on Application Support/Veypane/instance.lock
         try? FileManager.default.createDirectory(at: lockDirectoryURL, withIntermediateDirectories: true)
         let lockPath = lockDirectoryURL.appendingPathComponent("instance.lock", isDirectory: false).path
         let fd = Darwin.open(lockPath, O_CREAT | O_RDWR, S_IRUSR | S_IWUSR)

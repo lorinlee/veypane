@@ -82,7 +82,7 @@ public enum NativeOSOutsideClickAcceptanceRunner {
     public static func runAcceptance(
         into outputDir: URL,
         reportFilename: String = defaultReportFilename,
-        executionContext: String = "Opt-in XCTest / Swift Testing (VEYPANE_RUN_OS_MOUSE_TESTS=1 / SIDELARK_RUN_OS_MOUSE_TESTS=1)"
+        executionContext: String = "Opt-in XCTest / Swift Testing (VEYPANE_RUN_OS_MOUSE_TESTS=1)"
     ) async throws -> NativeOSOutsideClickAcceptanceReport {
         let axTrusted = AXIsProcessTrusted()
         let postAccess = CGPreflightPostEventAccess()

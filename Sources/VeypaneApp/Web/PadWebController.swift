@@ -370,7 +370,7 @@ public final class PadWebController: NSObject, WKNavigationDelegate, WKUIDelegat
         let js = """
         (function() {
             var m = \(muted ? "true" : "false");
-            window.__slidecraftMuted = m;
+            window.__veypaneMuted = m;
             document.querySelectorAll('audio, video').forEach(function(el) { el.muted = m; });
         })();
         """
@@ -624,7 +624,7 @@ public final class PadWebController: NSObject, WKNavigationDelegate, WKUIDelegat
             navigationAction.request.value(forHTTPHeaderField: "User-Agent")
         )
 
-        // 1. Handle custom app scheme or non-web external OS schemes (e.g. veypane://, sidelark://, mailto:, tel:)
+        // 1. Handle custom app scheme or non-web external OS schemes (e.g. veypane://, mailto:, tel:)
         if let url = reqURL, let scheme = url.scheme?.lowercased(), !scheme.isEmpty {
             if AppBrandIdentity.isSupportedURLScheme(scheme) || !PopupNavigationPolicy.isStandardWebDocumentScheme(scheme) {
                 if navigationAction.targetFrame?.isMainFrame == true {

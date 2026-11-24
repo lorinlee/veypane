@@ -573,12 +573,8 @@ public actor LocalAutomationServer {
         let candidate: String?
         if let auth = headers["authorization"], auth.lowercased().hasPrefix("bearer ") {
             candidate = String(auth.dropFirst(7)).trimmingCharacters(in: .whitespaces)
-        } else if let veypaneTok = headers["x-veypane-token"] {
-            candidate = veypaneTok.trimmingCharacters(in: .whitespaces)
-        } else if let sidelarkTok = headers["x-sidelark-token"] {
-            candidate = sidelarkTok.trimmingCharacters(in: .whitespaces)
         } else {
-            candidate = headers["x-slidecraft-token"]?.trimmingCharacters(in: .whitespaces)
+            candidate = headers["x-veypane-token"]?.trimmingCharacters(in: .whitespaces)
         }
 
         guard let provided = candidate else { return false }

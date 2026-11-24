@@ -1585,7 +1585,7 @@ final class ExtensionRuntimeCoordinator: NSObject, WKWebExtensionControllerDeleg
             completionHandler(nil)
         } else {
             let err = NSError(
-                domain: "com.slidecraft.extensions",
+                domain: "com.veypane.extensions",
                 code: 404,
                 userInfo: [NSLocalizedDescriptionKey: "Extension has no options page."]
             )
@@ -1761,7 +1761,7 @@ final class ExtensionRuntimeCoordinator: NSObject, WKWebExtensionControllerDeleg
         guard let anchorView = owner?.bestAnchorView(for: extID),
               anchorView.window != nil else {
             let err = NSError(
-                domain: "com.slidecraft.extensions",
+                domain: "com.veypane.extensions",
                 code: 1,
                 userInfo: [NSLocalizedDescriptionKey: "No visible anchor view for extension popup."]
             )
@@ -1812,7 +1812,7 @@ final class ExtensionRuntimeCoordinator: NSObject, WKWebExtensionControllerDeleg
         replyHandler: @escaping (Any?, (any Error)?) -> Void
     ) {
         let err = NSError(
-            domain: "com.slidecraft.nativeMessaging",
+            domain: "com.veypane.nativeMessaging",
             code: -1,
             userInfo: [NSLocalizedDescriptionKey: "Native messaging is not supported."]
         )
@@ -1826,7 +1826,7 @@ final class ExtensionRuntimeCoordinator: NSObject, WKWebExtensionControllerDeleg
         completionHandler: @escaping ((any Error)?) -> Void
     ) {
         let err = NSError(
-            domain: "com.slidecraft.nativeMessaging",
+            domain: "com.veypane.nativeMessaging",
             code: -1,
             userInfo: [NSLocalizedDescriptionKey: "Native messaging is not supported."]
         )

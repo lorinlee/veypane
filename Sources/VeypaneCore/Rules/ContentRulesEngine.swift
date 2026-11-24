@@ -46,7 +46,7 @@ public enum ContentRulesEngine {
         guard !trimmed.isEmpty else { return nil }
         let encodedData = try? JSONEncoder().encode(trimmed)
         let jsonString = encodedData.flatMap { String(data: $0, encoding: .utf8) } ?? "\"\""
-        let elementID = "slidecraft-css-\(ruleID.uuidString.lowercased())"
+        let elementID = "veypane-css-\(ruleID.uuidString.lowercased())"
         return """
         (function() {
             var cssText = \(jsonString);

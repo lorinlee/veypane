@@ -146,7 +146,7 @@ public enum NativeOSWindowResizeAcceptanceRunner {
     public static func runAcceptance(
         into outputDir: URL,
         reportFilename: String = defaultReportFilename,
-        executionMode: String = "Opt-in Swift Testing (VEYPANE_RUN_OS_RESIZE_TESTS=1 / SIDELARK_RUN_OS_RESIZE_TESTS=1)"
+        executionMode: String = "Opt-in Swift Testing (VEYPANE_RUN_OS_RESIZE_TESTS=1)"
     ) async throws -> NativeOSWindowResizeAcceptanceReport {
         let app = NSApplication.shared
         guard app.isRunning else {
@@ -154,7 +154,7 @@ public enum NativeOSWindowResizeAcceptanceRunner {
                 domain: "NativeOSWindowResizeAcceptance",
                 code: 9,
                 userInfo: [
-                    NSLocalizedDescriptionKey: "NSApplication.shared.isRunning is false: swiftpm-testing-helper executes @Test on DispatchQueue.main without NSApplication.run() (WindowServer HID mouseMoved/leftMouseDragged CGEvents are not translated into NSEvents under Task.sleep alone, nested app.run() deadlocks DispatchQueue.main, and calling app.nextEvent without app.run() terminates xctest). Execute via standalone SlideCraftApp --native-os-window-resize-probe <outputDir>."
+                    NSLocalizedDescriptionKey: "NSApplication.shared.isRunning is false: swiftpm-testing-helper executes @Test on DispatchQueue.main without NSApplication.run() (WindowServer HID mouseMoved/leftMouseDragged CGEvents are not translated into NSEvents under Task.sleep alone, nested app.run() deadlocks DispatchQueue.main, and calling app.nextEvent without app.run() terminates xctest). Execute via standalone VeypaneApp --native-os-window-resize-probe <outputDir>."
                 ]
             )
         }

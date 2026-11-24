@@ -6,14 +6,14 @@ import UserNotifications
 /// Bridges standard HTML5 `window.Notification` inside `WKWebView` to macOS `UNUserNotificationCenter` (SPEC.md #15).
 @MainActor
 public final class WebNotificationBridge: NSObject, WKScriptMessageHandler {
-    public static let handlerName = "slidecraftNotify"
+    public static let handlerName = "veypaneNotify"
 
     public static let bootstrapJavaScript = """
     (function() {
         if (window !== window.top) return;
-        if (window.__slidecraftNotificationsInstalled) return;
+        if (window.__veypaneNotificationsInstalled) return;
         if (typeof window.Notification !== "undefined") return;
-        window.__slidecraftNotificationsInstalled = true;
+        window.__veypaneNotificationsInstalled = true;
         var currentPermission = "default";
         function Notification(title, options) {
             options = options || {};
@@ -21,8 +21,8 @@ public final class WebNotificationBridge: NSObject, WKScriptMessageHandler {
             this.body = String(options.body || "");
             this.tag = String(options.tag || "");
             try {
-                if (window.webkit && window.webkit.messageHandlers && window.webkit.messageHandlers.slidecraftNotify) {
-                    window.webkit.messageHandlers.slidecraftNotify.postMessage({
+                if (window.webkit && window.webkit.messageHandlers && window.webkit.messageHandlers.veypaneNotify) {
+                    window.webkit.messageHandlers.veypaneNotify.postMessage({
                         type: "notify",
                         title: this.title,
                         body: this.body,
@@ -37,8 +37,8 @@ public final class WebNotificationBridge: NSObject, WKScriptMessageHandler {
         Notification.requestPermission = function(cb) {
             currentPermission = "granted";
             try {
-                if (window.webkit && window.webkit.messageHandlers && window.webkit.messageHandlers.slidecraftNotify) {
-                    window.webkit.messageHandlers.slidecraftNotify.postMessage({ type: "requestPermission" });
+                if (window.webkit && window.webkit.messageHandlers && window.webkit.messageHandlers.veypaneNotify) {
+                    window.webkit.messageHandlers.veypaneNotify.postMessage({ type: "requestPermission" });
                 }
             } catch (e) {}
             if (typeof cb === "function") { cb(currentPermission); }
@@ -93,8 +93,8 @@ public final class WebNotificationBridge: NSObject, WKScriptMessageHandler {
                 content.body = body
                 content.sound = .default
 
-                let id = rawTag.flatMap { $0.isEmpty ? nil : "slidecraft-\($0)" }
-                    ?? "slidecraft-\(UUID().uuidString)"
+                let id = rawTag.flatMap { $0.isEmpty ? nil : "veypane-\($0)" }
+                    ?? "veypane-\(UUID().uuidString)"
                 let req = UNNotificationRequest(identifier: id, content: content, trigger: nil)
                 UNUserNotificationCenter.current().add(req)
             }

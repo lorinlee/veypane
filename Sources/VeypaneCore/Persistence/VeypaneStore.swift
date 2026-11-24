@@ -182,9 +182,7 @@ public struct SettingsExportBundle: Codable, Equatable, Sendable {
 }
 
 public final class VeypaneStore: Sendable {
-    /// Preserved sync snapshot filename (Bucket A) so existing folder / iCloud Drive sync continues seamlessly.
-    public static let syncSnapshotFileName = "slidecraft-sync.json"
-    public static let alternateSyncSnapshotFileName = "veypane-sync.json"
+    public static let syncSnapshotFileName = "veypane-sync.json"
     public let directoryURL: URL
     public let stateFileURL: URL
     public let uiStateFileURL: URL
@@ -221,7 +219,7 @@ public final class VeypaneStore: Sendable {
 
     public static var defaultiCloudSyncFolderURL: URL {
         URL(fileURLWithPath: NSHomeDirectory())
-            .appendingPathComponent("Library/Mobile Documents/com~apple~CloudDocs/SlideCraft", isDirectory: true)
+            .appendingPathComponent("Library/Mobile Documents/com~apple~CloudDocs/Veypane", isDirectory: true)
     }
 
     public func load() -> StoreLoadResult {
@@ -313,23 +311,13 @@ public final class VeypaneStore: Sendable {
         fromDirectory syncDir: URL,
         currentState: WorkspaceState
     ) throws -> WorkspaceState? {
-        let candidates = [
-            syncDir.appendingPathComponent(Self.alternateSyncSnapshotFileName, isDirectory: false),
-            syncDir.appendingPathComponent(Self.syncSnapshotFileName, isDirectory: false)
-        ]
-        var newestBundle: SettingsExportBundle?
-        for syncFile in candidates where FileManager.default.fileExists(atPath: syncFile.path) {
-            let data = try Data(contentsOf: syncFile)
-            let bundle = try Self.makeDecoder().decode(SettingsExportBundle.self, from: data)
-            if let existing = newestBundle {
-                if bundle.exportedAt > existing.exportedAt {
-                    newestBundle = bundle
-                }
-            } else {
-                newestBundle = bundle
-            }
+        let syncFile = syncDir.appendingPathComponent(Self.syncSnapshotFileName, isDirectory: false)
+        guard FileManager.default.fileExists(atPath: syncFile.path) else {
+            return nil
         }
-        guard let bundle = newestBundle, bundle.exportedAt > currentState.updatedAt else {
+        let data = try Data(contentsOf: syncFile)
+        let bundle = try Self.makeDecoder().decode(SettingsExportBundle.self, from: data)
+        guard bundle.exportedAt > currentState.updatedAt else {
             return nil
         }
         return bundle.applying(to: currentState, merge: false)

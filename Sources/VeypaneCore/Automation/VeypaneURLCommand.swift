@@ -16,8 +16,8 @@ public enum VeypaneAutomationAction: Codable, Equatable, Sendable {
 }
 
 public enum VeypaneIPC {
-    /// Preserved distributed notification identifier (Bucket A) so existing IPC callers remain compatible.
-    public static let distributedNotificationName = Notification.Name("com.slidecraft.ipc.command")
+    /// Distributed notification identifier used for local CLI and running-app IPC.
+    public static let distributedNotificationName = Notification.Name("com.veypane.ipc.command")
     public static let payloadUserInfoKey = "payload"
 
     public static func encode(_ action: VeypaneAutomationAction) throws -> String {
@@ -49,7 +49,7 @@ public enum VeypaneURLCommand {
     public static let scheme = AppBrandIdentity.primaryURLScheme
     public static let primaryScheme = AppBrandIdentity.primaryURLScheme
 
-    /// Parses URLs under `veypane://...` and preserved legacy `sidelark://...` / `slidecraft://...`.
+    /// Parses URLs under `veypane://...`.
     public static func parse(_ url: URL) -> VeypaneAutomationAction? {
         guard AppBrandIdentity.isSupportedURLScheme(url.scheme) else { return nil }
         let components = URLComponents(url: url, resolvingAgainstBaseURL: false)

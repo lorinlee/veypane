@@ -31,7 +31,7 @@ public struct InteractionProbeReport: Codable, Sendable {
 }
 
 /// Isolated `--interaction-probe <outputDir>` runner using harmless local HTML test files in a temporary directory.
-/// Never touches the user's `~/Library/Application Support/SlideCraft` workspace or extensions.
+/// Never touches the user's `~/Library/Application Support/Veypane` workspace or extensions.
 @MainActor
 public enum InteractionProbeRunner {
     public static func runAndExit(outputDirectoryPath: String) {

@@ -19,15 +19,6 @@ let package = Package(
         .executable(
             name: "veypanectl",
             targets: ["veypanectl"]
-        ),
-        // Preserved compatibility CLI entrypoints (Bucket A)
-        .executable(
-            name: "sidelarkctl",
-            targets: ["sidelarkctl"]
-        ),
-        .executable(
-            name: "slidecraftctl",
-            targets: ["slidecraftctl"]
         )
     ],
     targets: [
@@ -58,16 +49,6 @@ let package = Package(
             name: "veypanectl",
             dependencies: ["VeypaneCore"],
             path: "Sources/veypanectl"
-        ),
-        .executableTarget(
-            name: "sidelarkctl",
-            dependencies: ["VeypaneCore"],
-            path: "Sources/sidelarkctl"
-        ),
-        .executableTarget(
-            name: "slidecraftctl",
-            dependencies: ["VeypaneCore"],
-            path: "Sources/slidecraftctl"
         ),
         .testTarget(
             name: "VeypaneCoreTests",

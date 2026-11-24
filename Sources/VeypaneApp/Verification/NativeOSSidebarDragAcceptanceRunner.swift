@@ -97,7 +97,7 @@ public enum NativeOSSidebarDragAcceptanceRunner {
             throw NSError(
                 domain: "NativeOSSidebarDragAcceptance",
                 code: 9,
-                userInfo: [NSLocalizedDescriptionKey: "NSApplication.shared.isRunning is false; execute via standalone SlideCraftApp --native-os-sidebar-drag-probe <outputDir>."]
+                userInfo: [NSLocalizedDescriptionKey: "NSApplication.shared.isRunning is false; execute via standalone VeypaneApp --native-os-sidebar-drag-probe <outputDir>."]
             )
         }
 

@@ -2,10 +2,7 @@ import AppIntents
 import Foundation
 import VeypaneCore
 
-// Note (Bucket A compatibility): AppIntent Swift struct names (`ToggleSlideCraftIntent`,
-// `OpenSlideCraftPadIntent`, `AddSlideCraftPadIntent`) are intentionally preserved so existing
-// Apple Shortcuts workflows remain bound across upgrades while displaying Veypane titles.
-public struct ToggleSlideCraftIntent: AppIntent {
+public struct ToggleVeypaneIntent: AppIntent {
     public static let title: LocalizedStringResource = "Toggle Veypane Panel"
     public static let description = IntentDescription("Slides the Veypane browser panel in or out.")
     public static let openAppWhenRun: Bool = true
@@ -19,7 +16,7 @@ public struct ToggleSlideCraftIntent: AppIntent {
     }
 }
 
-public struct OpenSlideCraftPadIntent: AppIntent {
+public struct OpenVeypanePadIntent: AppIntent {
     public static let title: LocalizedStringResource = "Open URL in Veypane Pad"
     public static let description = IntentDescription("Opens a URL inside a matching or active Veypane pad.")
     public static let openAppWhenRun: Bool = true
@@ -41,7 +38,7 @@ public struct OpenSlideCraftPadIntent: AppIntent {
     }
 }
 
-public struct AddSlideCraftPadIntent: AppIntent {
+public struct AddVeypanePadIntent: AppIntent {
     public static let title: LocalizedStringResource = "Add Veypane Pad"
     public static let description = IntentDescription("Creates a new website pad in Veypane.")
     public static let openAppWhenRun: Bool = true
@@ -66,7 +63,7 @@ public struct AddSlideCraftPadIntent: AppIntent {
 public struct VeypaneShortcutsProvider: AppShortcutsProvider {
     public static var appShortcuts: [AppShortcut] {
         AppShortcut(
-            intent: ToggleSlideCraftIntent(),
+            intent: ToggleVeypaneIntent(),
             phrases: [
                 "Toggle \(.applicationName)",
                 "Show \(.applicationName) panel"
@@ -75,7 +72,7 @@ public struct VeypaneShortcutsProvider: AppShortcutsProvider {
             systemImageName: "sidebar.right"
         )
         AppShortcut(
-            intent: AddSlideCraftPadIntent(),
+            intent: AddVeypanePadIntent(),
             phrases: [
                 "Add pad in \(.applicationName)"
             ],
